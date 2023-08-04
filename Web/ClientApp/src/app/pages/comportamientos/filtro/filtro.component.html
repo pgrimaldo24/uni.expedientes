@@ -1,0 +1,100 @@
+<div class="col">
+    <div class="row">
+        <div class="col">
+            <button id="btnFiltros" class="btn btn-light" type="button" data-toggle="collapse" (click)="onCollapse()"
+                [attr.aria-expanded]="!isCollapsed" data-target="#contenedorFiltros" aria-controls="contenedorFiltros">
+                <i class="fas fa-filter"></i> {{ 'common.filtros' | translate }}
+            </button>
+            <ng-container *ngIf="isCollapsed">
+                <ng-container *ngFor="let filteredValue of clauses">
+                    <div class="btn btn-primary btn-sm ml-1 disabled">
+                        <span>{{filteredValue.label}}: {{filteredValue.text}}</span>
+                        <button type="button" class="close" (click)="removeFilterField($event, filteredValue.key)">
+                            <span class="ml-1" aria-hidden="true"
+                                style="vertical-align: top; color:white; text-shadow: none;">&times;</span>
+                        </button>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div [(ngbCollapse)]="isCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <div class="col">
+                    <form [formGroup]="filterForm" novalidate (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-2">
+                                        <label>{{ 'pages.listadoComportamientos.comportamientoExpediente' | translate }}</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{'pages.listadoComportamientos.placeholder.comportamiento' | translate}}"
+                                            [formControlName]="controls.comportamientoExpediente" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-2">
+                                        <label>{{ 'pages.listadoComportamientos.estaVigente' | translate }}</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.estaVigente">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.estaVigente).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.estaVigente, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-2">
+                                        <label>{{ 'pages.listadoComportamientos.nivelUso' | translate }}</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{'pages.listadoComportamientos.placeholder.nivelUso' | translate}}"
+                                            [formControlName]="controls.nivelUso" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-2">
+                                        <label>{{ 'pages.listadoComportamientos.condiciones' | translate }}</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <unir-combobox [serverSide]="true" [multiSelect]="true" [config]="configComboCondiciones"
+                                            [formControlName]="controls.condiciones">
+                                        </unir-combobox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="mt-2 col d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                            {{ 'common.buscar' | translate }}
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="cleanFilter()">
+                                            {{ 'common.limpiar' | translate }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

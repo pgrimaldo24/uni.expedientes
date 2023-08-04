@@ -1,0 +1,34 @@
+<fieldset #divPlan class="fieldset-border" [ngClass]="{'div-full' : fullScreen}">
+    <legend class="legend-border">
+        {{ 'pages.expedienteTabs.resumen.planTitle' | translate }}
+    </legend>
+    <div *blockUI="blockIdentity" class="h-full">
+        <div *ngFor="let grafoNode of grafosNodes" class="h-full">
+            <div class="tree" *ngIf="grafoNode.width && grafoNode.height"
+                [ngClass]="parentWidth > grafoNode.width ? 'tree-center' : ''">
+                <svg:svg class="treeLink" [style.width]="grafoNode.width+'px'"
+                    [style.height]="parentHeight > grafoNode.height ? parentHeight+'px' : grafoNode.height+'px'">
+                    <ng-container *ngFor="let node of grafoNode.nDatabaseNodesPath">
+                        <path *ngIf="node.nodeChildren.length == 1" [attr.stroke]="node.linkColor"
+                            [attr.d]="node._drawPath(node, node.nodeChildren[0])" [attr.stroke-width]="4"
+                            (click)="showCalificaciones(node.data)" />
+                        <ng-container *ngIf="node.nodeChildren.length > 1">
+                            <path *ngFor="let subNode of node.nodeChildren" [attr.stroke]="node.linkColor"
+                                [attr.d]="subNode._drawPath(node, subNode)" [attr.stroke-width]="4"
+                                (click)="showCalificaciones(subNode.data, node.data)" />
+                        </ng-container>
+                    </ng-container>
+                    </svg>
+                    <ng-container *ngFor="let node of grafoNode.nDatabaseNodes">
+                        <div class="item" [ngClass]="{'border-selected' : node.data.seleccionado}"
+                            [ngStyle]="{ left:node.XPosition+'px', top:node.YPosition+'px', width:node.width+'px', 'background-color':node.background, color:node.color }">
+                            {{node.data.nombre}}
+                        </div>
+                    </ng-container>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<app-popup-calificaciones #modalCalificaciones [resumenForm]="resumenForm"
+    [reconocimientos]="reconocimientos?.asignaturasReconocimientos">
+</app-popup-calificaciones>

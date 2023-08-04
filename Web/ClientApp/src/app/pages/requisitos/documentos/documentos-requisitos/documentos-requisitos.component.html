@@ -1,0 +1,112 @@
+<fieldset class="fieldset-border" [disabled]="disabledFilesTipes">
+  <legend class="legend-border">
+    {{ 'pages.formularioRequisitos.documentos' | translate }}
+  </legend>
+  <div class="col">
+    <div class="card-container-btn">
+      <div class="card-btn-item">
+        <button
+          (click)="newDocumento()"
+          type="button"
+          class="btn btn-primary btn-sm mb-2"
+        >
+          <i class="fas fa-plus-circle"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm mb-2 ml-2"
+          (click)="deleteMasive()"
+        >
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+    <app-data-table
+      #tableDocumentosRequisitos
+      [isScroll]="true"
+      [pageLengthOption]="false"
+      [columns]="columns"
+      [rows]="rows"
+      [total]="totalElements"
+      [selectable]="true"
+      [page]="pageIndex"
+      [count]="pageCount"
+      (onLoad)="search()"
+      [cellsTemplate]="{
+        seleccion: checkbox,
+        opciones: opciones,
+        documentoEditable: documentoEditable,
+        documentoSecurizado: documentoSecurizado,
+        documentoObligatorio: documentoObligatorio,
+        requiereAceptacionAlumno: requiereAceptacionAlumno
+      }"
+      [columnsTemplate]="{ seleccion: checkSeleccion }"
+    >
+      <ng-template #checkbox let-data>
+        <div class="text-center">
+          <input
+            [checked]="isChecked(data.object.id)"
+            type="checkbox"
+            (change)="checkRequisito($event, data.object)"
+          />
+        </div>
+      </ng-template>
+      <ng-template #checkSeleccion>
+        <input
+          type="checkbox"
+          [disabled]="rows.length === 0"
+          [checked]="isAllChecked()"
+          (change)="checkRequisitosFiltered($event)"
+        />
+      </ng-template>
+      <ng-template #opciones let-data>
+        <button
+          class="btn btn-light mr-2 center"
+          (click)="editDocumentoRequisito(data.object)"
+        >
+          <span class="fas fa-pen"></span>
+        </button>
+        <button
+          class="btn btn-light center"
+          (click)="deleteDocumentoRequisito(data.object)"
+        >
+          <span class="fas fa-trash-alt"></span>
+        </button>
+      </ng-template>
+      <ng-template #documentoEditable let-data>
+        <label>{{
+          (data.object.documentoEditable
+            ? 'pages.listadoRequisitos.si'
+            : 'pages.listadoRequisitos.no'
+          ) | translate
+        }}</label>
+      </ng-template>
+      <ng-template #documentoSecurizado let-data>
+        <label>{{
+          (data.object.documentoSecurizado
+            ? 'pages.listadoRequisitos.si'
+            : 'pages.listadoRequisitos.no'
+          ) | translate
+        }}</label>
+      </ng-template>
+      <ng-template #documentoObligatorio let-data>
+        <label>{{
+          (data.object.documentoObligatorio
+            ? 'pages.listadoRequisitos.si'
+            : 'pages.listadoRequisitos.no'
+          ) | translate
+        }}</label>
+      </ng-template>
+      <ng-template #requiereAceptacionAlumno let-data>
+        <label>{{
+          (data.object.requiereAceptacionAlumno
+            ? 'pages.listadoRequisitos.si'
+            : 'pages.listadoRequisitos.no'
+          ) | translate
+        }}</label>
+      </ng-template>
+    </app-data-table>
+  </div>
+</fieldset>
+<app-documentos-requisitos-form #openForm></app-documentos-requisitos-form>
+<app-confirmation-modal #confirmModal></app-confirmation-modal>

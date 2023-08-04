@@ -1,0 +1,21 @@
+<fieldset class="fieldset-border">
+    <legend class="legend-border">
+        {{ 'pages.expedienteTabs.resumen.resumenCreditosTitle' | translate }}
+    </legend>
+    <div class="col" [formGroup]="resumenForm">
+        <div class="form-group">
+            <label>{{ 'pages.expedienteTabs.resumen.requerimiento' | translate }}</label>
+            <app-combo-trayecto [esResumen]="true" [grafoPlan]="grafoPlan" [expedienteAlumno]="expedienteAlumno"
+                [calificacionesForm]="resumenForm"></app-combo-trayecto>
+        </div>
+        <app-data-table #table [columns]="columns" [rows]="rows" [isScroll]="true" [pageLengthOption]="false"
+            [cellsTemplate]="{ obtenidos: obtenidos }">
+            <ng-template #obtenidos let-data>
+                <span *ngIf="data.rowData.icono"><i
+                        [ngClass]="data.rowData.obtenidos >= data.rowData.requeridos ? 'fa-check text-success' : 'fa-times text-danger'"
+                        class="fas pr-1"></i></span>
+                {{ data.rowData.obtenidos }}
+            </ng-template>
+        </app-data-table>
+    </div>
+</fieldset>

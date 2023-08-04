@@ -1,0 +1,28 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ titulo }}</h4>
+        <button type="button" class="close" aria-describedby="modal-title" (click)="closeModal(modal)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="esPrimeraMatricula">
+            <div class="row form-group">
+                <label class="col-md-3">{{ 'pages.expedienteTabs.resumen.viaAcceso' | translate }}</label>
+                <label class="col-md-9">{{
+                    datosErp?.viaAccesoPlan?.viaAcceso?.displayNameClasificacionSuperViaAcceso}}</label>
+            </div>
+            <div class="row form-group">
+                <label class="col-md-3">{{ 'pages.expedienteTabs.resumen.titulacionAcceso' | translate }}</label>
+                <label class="col-md-9">{{ expedienteAlumno.titulacionAcceso?.titulo }} - {{
+                    expedienteAlumno.titulacionAcceso?.institucionDocente }}</label>
+            </div>
+        </div>
+        <div *ngIf="!esPrimeraMatricula">
+            <div class="row form-group">
+                <label class="col-md-3">{{ 'pages.expedienteTabs.resumen.titulo' | translate }}</label>
+                <label class="col-md-9">{{ expedienteAlumno.tituloTrabajoFinEstudio}}</label>
+            </div>
+        </div>
+    </div>
+</ng-template>

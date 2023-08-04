@@ -1,0 +1,28 @@
+<fieldset class="fieldset-border">
+    <legend class="legend-border">{{ 'pages.formularioComportamientos.nivelesUso' | translate }}</legend>
+    <div class="col niveles">
+      <div class="card-container-btn">
+        <div class="card-btn-item">
+          <button (click)="addNivelUso()" type="button" class="btn btn-primary btn-sm mb-2">
+            <i class="fas fa-plus-circle"></i>
+          </button>
+        </div>
+      </div>
+      <div class="tree-component" *blockUI="blockIdentity">
+        <app-tree-view *ngIf="tree"
+          [isRoot]="false"
+          [rootText]="tree.name"
+          [treeData]="tree.nodes" 
+          [allCollapsable]="false"
+          [collapseIcon]="icons"
+          #treeViewnivelesUso>
+          <ng-template #icons let-node="node">
+            <i [ngClass]="getNodeIcon(node)"></i>
+          </ng-template>
+        </app-tree-view>
+      </div>
+    </div>
+  </fieldset>
+  <app-niveles-uso-popup-add (completed)="saveNivelUso($event)" #modalNivelUso></app-niveles-uso-popup-add>
+  <app-confirmation-modal #confirmModalNivelUso></app-confirmation-modal>
+

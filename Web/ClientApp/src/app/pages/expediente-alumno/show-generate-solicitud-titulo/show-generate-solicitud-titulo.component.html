@@ -1,0 +1,132 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{
+        'pages.listadoExpediente.generarSolicitudTituloCertificado' | translate
+      }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <form
+    [formGroup]="form"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    *blockUI="blockIdentity"
+    autocomplete="off"
+  >
+    <div class="modal-body">
+      <div class="form-group row">
+        <label class="form-label col-sm-5"
+          >{{
+            'pages.listadoExpediente.generateSolicitudTitulo.tipoSolicitud'
+              | translate
+          }}
+          (*)</label
+        >
+        <div class="col-sm-7">
+          <unir-combobox
+            [serverSide]="true"
+            [config]="configComboTiposSolicitudes"
+            [formControlName]="controls.tipoSolicitud"
+            [class.is-valid]="ctrlValid(controls.tipoSolicitud)"
+            [class.is-invalid]="ctrlInvalid(controls.tipoSolicitud)"
+            (selected)="onChangeTipoSolicitud()"
+          >
+          </unir-combobox>
+          <div
+            class="group-show-errors"
+            *ngIf="ctrlInvalid(controls.tipoSolicitud)"
+          >
+            <span
+              class="invalid-feedback"
+              *ngIf="ctrlField(controls.tipoSolicitud).hasError('required')"
+            >
+              {{ 'validations.required' | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="form-label col-sm-5"
+          >{{
+            'pages.listadoExpediente.generateSolicitudTitulo.fechaSolicitud'
+              | translate
+          }}
+          (*)</label
+        >
+        <div class="col-sm-7">
+          <app-datepicker
+            [formControlName]="controls.fechaSolicitud"
+            [class.is-valid]="ctrlValid(controls.fechaSolicitud)"
+            [class.is-invalid]="ctrlInvalid(controls.fechaSolicitud)"
+          ></app-datepicker>
+          <div
+            class="group-show-errors"
+            *ngIf="ctrlInvalid(controls.fechaSolicitud)"
+          >
+            <span
+              class="invalid-feedback"
+              *ngIf="ctrlField(controls.fechaSolicitud).hasError('required')"
+            >
+              {{ 'validations.required' | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *appHasRoles="[roles.ADMIN_ROLE]">
+        <label class="form-label col-sm-5">{{
+          'pages.listadoExpediente.generateSolicitudTitulo.fechaPago'
+            | translate
+        }}</label>
+        <div class="col-sm-7">
+          <app-datepicker
+            [formControlName]="controls.fechaPago"
+            [class.is-valid]="ctrlValid(controls.fechaPago)"
+            [class.is-invalid]="ctrlInvalid(controls.fechaPago)"
+          ></app-datepicker>
+          <div
+            class="group-show-errors"
+            *ngIf="ctrlInvalid(controls.fechaPago)"
+          >
+            <span
+              class="invalid-feedback"
+              *ngIf="ctrlField(controls.fechaPago).hasError('required')"
+            >
+              {{ 'validations.required' | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label class="text-indication">{{
+          'pages.listadoExpediente.generateSolicitudTitulo.indicacion'
+            | translate
+        }}</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div>
+        <button type="submit" class="btn btn-primary btn-sm mr-2">
+          {{
+            'pages.listadoExpediente.generateSolicitudTitulo.btnCrearSolicitud'
+              | translate
+          }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="modal.close()"
+        >
+          {{ 'common.cancelar' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

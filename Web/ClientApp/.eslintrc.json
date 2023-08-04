@@ -1,0 +1,22 @@
+{
+  "parser": "@typescript-eslint/parser", // Especifica el analizador ESLint
+  "extends": [
+    "plugin:@typescript-eslint/recommended", // Utiliza las reglas recomendadas de @ typescript-eslint / eslint-plugin
+    "prettier/@typescript-eslint", // Utiliza eslint-config-prettier para deshabilitar las reglas de ESLint de @ typescript-eslint / eslint-plugin que entrarían en conflicto con más bonito
+    "plugin:prettier/recommended" // Habilita eslint-plugin-prettier y eslint-config-prettier. Esto mostrará errores más bonitos como errores de ESLint. Asegúrese de que esta sea siempre la última configuración en la matriz de extensiones.
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020, // Permite analizar las características modernas de ECMAScript
+    "sourceType": "module" // Permite el uso de importaciones
+  },
+  "rules": {
+    // Lugar para especificar las reglas de ESLint. Puede usarse para sobrescribir las reglas especificadas en las configuraciones extendidas
+    "@typescript-eslint/no-empty-function": ["off", { "allow": ["functions"] }],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  }
+}

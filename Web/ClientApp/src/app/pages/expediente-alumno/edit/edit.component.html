@@ -1,0 +1,14 @@
+<div class="col">
+  <div class="page-title">{{ 'pages.edit.titlePage' | translate }}</div>
+  <app-tabs [idExpedienteAlumno]="idAlumno" [section]="section"></app-tabs>
+  <div class="row">
+    <div class="mt-2 col" style="display: flex; justify-content: space-between">
+      <button
+        type="button"
+        class="btn btn-primary btn-sm mr-2"
+        [routerLink]="['/ExpedienteAlumno/List']">
+        {{ 'common.volver' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

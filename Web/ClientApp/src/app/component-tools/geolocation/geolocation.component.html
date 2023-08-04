@@ -1,0 +1,102 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Seleccione Territorio</h4>
+    <button
+      type="button"
+      class="close"
+      aria-describedby="modal-title"
+      (click)="dismissModal()"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <form [formGroup]="form" novalidate (ngSubmit)="onSubmit(modal)">
+    <div class="modal-body">
+      <div>
+        <div class="row form-group">
+          <label class="col-md-4 col-form-label"> País </label>
+          <div class="col-md-8">
+            <unir-combobox
+              id="cbxPais"
+              [serverSide]="true"
+              [config]="configPais"
+              [formControlName]="controls.country"
+              (selected)="onChangeCountry(true)"
+              [class.is-valid]="ctrlValid(controls.country)"
+              [class.is-invalid]="ctrlInvalid(controls.country)"
+              UnirTrimLeft
+            >
+            </unir-combobox>
+            <div
+              class="group-show-errors"
+              *ngIf="ctrlInvalid(controls.country)"
+            >
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.country).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <span formArrayName="divisions">
+          <div
+            class="row form-group"
+            *ngFor="let division of getDivisions.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <label class="col-md-4 col-form-label">
+              {{ division.value.name }}
+            </label>
+            <div class="col-md-8">
+              <unir-combobox
+                [attr.id]="'division + i'"
+                id="cbxDivion"
+                [serverSide]="true"
+                [config]="division.value.divisionConfig"
+                formControlName="value"
+                (selected)="onChangeDivision(division.value.value, i + 1)"
+                [class.is-valid]="ctrlValidDivisions(division, controls.value)"
+                [class.is-invalid]="
+                  ctrlInvalidDivisions(division, controls.value)
+                "
+                UnirTrimLeft
+              >
+              </unir-combobox>
+              <div
+                class="group-show-errors"
+                *ngIf="ctrlInvalidDivisions(division, controls.value)"
+              >
+                <span
+                  class="invalid-feedback"
+                  *ngIf="
+                    ctrlFieldDivisions(division, controls.value).hasError(
+                      'required'
+                    )
+                  "
+                >
+                  {{ 'validations.required' | translate }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div class="modal-footer container-footer">
+      <div>
+        <button type="submit" class="btn btn-primary btn-sm mr-2">
+          Aceptar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="cancelar(modal)"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

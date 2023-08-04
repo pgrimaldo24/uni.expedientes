@@ -1,0 +1,77 @@
+<fieldset class="fieldset-border">
+  <legend class="legend-border">
+    {{ 'pages.alumno.expedientes.title' | translate }}
+  </legend>
+  <div class="col">
+    <app-data-table
+      #table
+      [columns]="columns"
+      [rows]="rows"
+      [isScroll]="true"
+      [pageLengthOption]="false"
+      [cellsTemplate]="{
+        seleccion: checkSeleccion,
+        acciones: options,
+        acronimoUniversidad: acronimoUniversidad,
+        alumno: alumno,
+        fechas: fechas,
+        plan: plan
+      }"
+      (onLoad)="search()"
+    >
+      <ng-template #checkSeleccion let-data>
+        <input
+          type="checkbox"
+          [disabled]="rows.length == 0"
+          (change)="checkSolicitud($event, data.object.id)"
+        />
+      </ng-template>
+      <ng-template #options let-data>
+        <div class="overflow-hidden">
+          <div ngbDropdown container="body" placement="bottom-right">
+            <i
+              class="fas fa-arrow-circle-right iconSize25"
+              (click)="redirectToEditExpediente(data.object.id)"
+            ></i>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #acronimoUniversidad let-data>
+        <span>{{ data.object.acronimoUniversidad }}</span
+        ><br />
+      </ng-template>
+      <ng-template #alumno let-data>
+        <span>{{ data.rowData.displayNameDocumentoIdentificacionAlumno }}</span
+        ><br />
+        <span>{{ data.rowData.displayNameNombreAlumno }}</span>
+      </ng-template>
+      <ng-template #fechas let-data>
+        <div>
+          <strong>{{ 'pages.listadoExpediente.apertura' | translate }}</strong>
+          <span *ngIf="data.object.fechaApertura">
+            {{ data.rowData.fechaApertura }}
+          </span>
+        </div>
+        <div>
+          <strong>{{
+            'pages.listadoExpediente.finalizacion' | translate
+          }}</strong>
+          <span *ngIf="data.object.fechaFinalizacion">
+            {{ data.rowData.fechaFinalizacion }}
+          </span>
+        </div>
+      </ng-template>
+      <ng-template #plan let-data>
+        <div>
+          <span *ngIf="data.object.nombreEstudio">
+            {{ data.object.nombreEstudio }}
+          </span>
+          <br *ngIf="data.object.nombrePlan" />
+          <span *ngIf="data.object.nombrePlan">
+            {{ data.object.nombrePlan }}
+          </span>
+        </div>
+      </ng-template>
+    </app-data-table>
+  </div>
+</fieldset>

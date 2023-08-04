@@ -1,0 +1,26 @@
+.fechas {
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.page-title {
+    color: primary;
+    font-size: 130%;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .col-10 {
+    font-weight: bold;
+  }
+  .col-9 {
+    font-weight: bold;
+  }
+  .con-combo {
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    line-height: 30px;
+  }

@@ -1,0 +1,67 @@
+<div class="container-data-table">
+  <div class="row tool-per-page" *ngIf="pageLengthOption">
+    <div class="col-auto">
+      <span class="show-part-1">Mostrar</span>
+      <select [(ngModel)]="count" (change)="countChanged()" class="form-control form-control-sm">
+        <option *ngFor="let c of counts" [ngValue]="c">{{c}}</option>
+      </select>
+      <span class="show-part-2">elementos</span>
+    </div>
+  </div>
+  <div class="row table-data">
+    <div class="col" [class.tableFixHead]="(rows != null && rows.length > 10) ? isScroll : false">
+      <table class="table table-sm table-bordered" *blockUI="blockIdentity">
+        <thead>
+        <tr>
+          <th scope="col" *ngFor="let column of columns" (click)="orderChange($event, column)"
+              class="{{column.class != null ? column.class: ''}}" [ngStyle]="column.style">
+              <span *ngIf="columnsTemplate[column.field] == null;else colDynamic"
+                    class="col-name">{{ column.header }}</span>
+            <ng-template #colDynamic
+                         *ngTemplateOutlet="columnsTemplate[column.field]; context: { $implicit: column }">
+            </ng-template>
+            <i *ngIf="column.sortable" class="fas"
+               [ngClass]="direction == 1 ? 'fa-long-arrow-alt-up': 'fa-long-arrow-alt-down'">
+            </i>
+          </th>
+        </tr>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="onDropRow($event)" [cdkDropListDisabled]="disableDropList">
+        <tr *ngFor="let row of rows" [class]="row.class" (click)="selectRow(row)"
+            [ngClass]="{'table-active': row.selected}" cdkDrag cdkDragLockAxis="y">
+          <td *ngFor="let column of columns" [class]="row.cells[column.field]?.class"
+              [ngStyle]="row.cells[column.field]?.style">
+            <ng-container *ngIf="cellsTemplate[column.field] != null;then dynamic; else static">
+            </ng-container>
+            <ng-template #static>
+              <span>{{ row.cells[column.field]?.value }}</span>
+            </ng-template>
+            <ng-container #dynamic *ngTemplateOutlet="cellsTemplate[column.field]; context: { $implicit: row }">
+            </ng-container>
+          </td>
+        </tr>
+        <tr *ngIf="rows == null || rows.length == 0">
+          <td class="text-center" [attr.colSpan]="columns.length">No se
+            encontraron resultados
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row paginate-info" *ngIf="total > 0">
+    <div class="col-auto">
+      <span>
+        Mostrando desde <b>{{total == 0 ? 0 : (page - 1) * count + 1}}</b>
+        hasta <b>{{total == 0 ? 0 : (page * count > total ? page * count + (total - page * count) : page * count)}}</b>
+        de <b>{{total}}</b> registros</span>
+    </div>
+    <div class="col">
+      <div class="float-right">
+        <ngb-pagination maxSize="5" rotate="true" ellipses="false" boundaryLinks="true" [collectionSize]="total"
+                        [pageSize]="count" [(page)]="page" (pageChange)="pageChange()">
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<div *blockUI="blockIdentity" [formGroup]="calificacionesForm">
+    <unir-combobox [serverSide]="false" [elements]="comboTrayectos" [formControlName]="formControls.trayecto"
+        (selected)="onChangeTrayecto()">
+    </unir-combobox>
+</div>

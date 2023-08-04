@@ -1,0 +1,180 @@
+<div class="col">
+    <div class="row">
+        <div class="col">
+            <button id="btnFiltros" class="btn btn-light" type="button" data-toggle="collapse" (click)="onCollapse()"
+                [attr.aria-expanded]="!isCollapsed" data-target="#contenedorFiltros" aria-controls="contenedorFiltros">
+                <i class="fas fa-filter"></i> {{ 'common.filtros' | translate }}
+            </button>
+            <ng-container *ngIf="isCollapsed">
+                <ng-container *ngFor="let filteredValue of clauses">
+                    <div class="btn btn-primary btn-sm ml-1 disabled">
+                        <span>{{filteredValue.label}}: {{filteredValue.text}}</span>
+                        <button type="button" class="close" (click)="removeFilterField($event, filteredValue.key)">
+                            <span class="ml-1" aria-hidden="true"
+                                style="vertical-align: top; color:white; text-shadow: none;">&times;</span>
+                        </button>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div [(ngbCollapse)]="isCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <div class="col">
+                    <form [formGroup]="filterForm" novalidate (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-2">
+                                        <label>{{ 'pages.listadoRequisitos.condicionExpediente' | translate }}</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{'pages.listadoRequisitos.placeholder.condicion' | translate}}"
+                                            [formControlName]="controls.condicionExpediente" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{ 'pages.listadoRequisitos.estaVigente' |
+                                        translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.estaVigente">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.estaVigente).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.estaVigente, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{ 'pages.listadoRequisitos.requeridoTitulo' |
+                                        translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.requeridoTitulo">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.requeridoTitulo).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.requeridoTitulo, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{ 'pages.listadoRequisitos.requiereMatricularse'
+                                        | translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.requiereMatricularse">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.requiereMatricularse).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.requiereMatricularse, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{ 'pages.listadoRequisitos.requeridoPagoTasas' |
+                                        translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.requeridoPagoTasas">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.requeridoPagoTasas).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.requeridoPagoTasas, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{'pages.listadoRequisitos.estadoExpediente' |
+                                        translate}}</label>
+                                    <div class="col-sm-8">
+                                        <unir-combobox [serverSide]="true" [multiSelect]="true"
+                                            [config]="configComboEstadoExpediente"
+                                            [formControlName]="controls.estadoExpediente" #cbxEstadoExpediente>
+                                        </unir-combobox>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{
+                                        'pages.listadoRequisitos.requiereDocumentacion' | translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.requiereDocumentacion">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.requiereDocumentacion).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.requiereDocumentacion, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="form-label col-sm-4">{{
+                                        'pages.listadoRequisitos.documentacionProtegida' | translate }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                                            [formControlName]="controls.documentacionProtegida">
+                                            <ng-container *ngFor="let opcion of tiposModoSeleccion">
+                                                <label ngbButtonLabel class="btn-primary"
+                                                    [class.active]="ctrlField(controls.documentacionProtegida).value === opcion.id"
+                                                    (click)="setModoSeleccion(controls.documentacionProtegida, opcion.id)">
+                                                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.nombre}}
+                                                </label>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label
+                                        class="form-label col-sm-4">{{'pages.listadoRequisitos.modoRequerimientoDocumentacion'
+                                        | translate}}</label>
+                                    <div class="col-sm-8">
+                                        <unir-combobox [serverSide]="true" [multiSelect]="true"
+                                            [config]="configComboModoRequerimientoDocumentacion"
+                                            [formControlName]="controls.modoRequerimientoDocumentacion"
+                                            #cbxModoRequerimientoDocumentacion>
+                                        </unir-combobox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="mt-2 col d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                            {{ 'common.buscar' | translate }}
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="cleanFilters()">
+                                            {{ 'common.limpiar' | translate }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

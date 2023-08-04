@@ -1,0 +1,31 @@
+<div class="combobox-container-main" [class.disabled-combobox]="disable" [ngClass]="expanded ? 'container-expanded' : 'container-collapsed'">
+  <div class="container-selected" (click)="expandCollapse($event)">
+      <span [title]="currentValue ? currentValue.name : 'Seleccione un elemento'"
+            [ngClass]="currentValue ? 'selected-value': 'place-holder'">
+        {{ currentValue ? currentValue.name : 'Seleccione un elemento' }}
+      </span>
+    <a *ngIf="currentValue != null && !disable" tabIndex="-1" (click)="clearSelected($event)" class="clear">
+      <i class="fas fa-times"></i>
+    </a>
+    <a tabIndex="-1" href="javascript:void(0);" class="down-up" [ngClass]="{'text-secondary' : disable}">
+      <i [ngClass]="expanded ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i>
+    </a>
+  </div>
+  <div class="container-search-items" *ngIf="expanded">
+    <div class="container-search">
+      <input #search [formControl]="input"/>
+      <ng-template *ngIf="loading; then iconLoading else iconSearch"></ng-template>
+      <ng-template #iconSearch>
+        <a tabIndex="-1" href="javascript:void(0);"><i class="fas fa-search"></i></a>
+      </ng-template>
+      <ng-template #iconLoading>
+        <a tabIndex="-1" href="javascript:void(0);"><i class="loading"></i></a>
+      </ng-template>
+    </div>
+    <div class="container-items">
+      <unir-tree-view [searchText]="search.value" [items]="items" (selectedChange)="selectedChange($event)"
+                      [collapseIcon]="collapseIcon">
+      </unir-tree-view>
+    </div>
+  </div>
+</div>

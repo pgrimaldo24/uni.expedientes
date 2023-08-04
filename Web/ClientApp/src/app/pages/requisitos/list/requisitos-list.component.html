@@ -1,0 +1,49 @@
+<div class="col">
+  <h3 class="card-title">
+    {{ 'pages.listadoRequisitos.titlePage' | translate }}
+  </h3>
+</div>
+<app-filtro (searchEvent)="applySearchFilter($event)"></app-filtro>
+<div class="col">
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="row">
+        <h5 class="col card-title">{{ 'common.resultados' | translate }}</h5>
+      </div>
+      <div class="col-12">
+        <div class="row form-group">
+          <button type="button" class="btn btn-primary btn-sm mr-2" (click)="addRequisito()">
+            {{ 'common.crear' | translate }}
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" (click)="deleteMasive()">
+            {{ 'common.eliminar' | translate }}
+          </button>
+        </div>
+      </div>
+      <app-data-table #table [columns]="columns" [rows]="rows" [total]="totalElements"
+        [columnsTemplate]="{ seleccion: checkSeleccion }" [cellsTemplate]="{ seleccion: checkbox, opciones: opciones }"
+        (onLoad)="search($event)" [page]="pageIndex" [count]="count">
+        <ng-template #checkbox let-data>
+          <div class="text-center">
+            <input [checked]="isChecked(data.object.id)" type="checkbox"
+              (change)="checkRequisito($event, data.object)" />
+          </div>
+        </ng-template>
+        <ng-template #opciones let-data>
+          <button class="btn btn-light mr-2 center" [routerLink]="['/requisitos/edit', data.object.id]">
+            <span class="fas fa-pen"></span>
+          </button>
+          <button class="btn btn-light center" (click)="deleteRequisito(data.object)">
+            <span class="fas fa-trash-alt"></span>
+          </button>
+        </ng-template>
+        <ng-template #checkSeleccion>
+          <input type="checkbox" [disabled]="rows.length === 0" [checked]="isAllChecked()"
+            (change)="checkRequisitosFiltered($event)" />
+        </ng-template>
+      </app-data-table>
+    </div>
+  </div>
+</div>
+<app-confirmation-modal #confirmModal></app-confirmation-modal>
+<app-add-requisito #openForm></app-add-requisito>

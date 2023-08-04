@@ -1,0 +1,38 @@
+<ng-container *ngIf="!isloading; else loading">
+    <div class="main-container pantalla" (scroll)="onScroll()">
+     <div style="width:100%">
+            <div class="main-header-logo child">
+                <div class="logo-unir">
+                    <a routerLink="/home" (click)="updateMenu()"><img src="../assets/images/logo_new.png"></a>
+                </div>
+                <div class="title-application">
+                    <a class="navbar-brand">
+                        <i class="fas fa-graduation-cap mr-1"></i>
+                        {{ 'common.appName' | translate}}
+                    </a>
+                </div>
+            </div>
+            <div class="main-header child" [ngClass]=" fixedMainHeader ? 'fixed-header-menu' : 'no-fixed-header-menu'">
+                <app-menu [authorizedMenu]="authorizedMenu" (onlogout)="logoff()"></app-menu>
+            </div>
+        </div>
+        <div class="main-body" [ngClass]=" fixedMainHeader ? 'body-add' : null">
+            <br>
+            <router-outlet></router-outlet>
+        </div>
+        <div class="main-footer">
+            <div style="width: 280px"> </div>
+            <div class="info-empresa"> {{ 'info.empresa' | translate }} </div>
+            <div class="title-application">
+                <a class="navbar-brand"><i class="fas fa-graduation-cap mr-1"></i>{{ 'common.appName' | translate }}</a>
+            </div>
+            <div class="info-version"> (v{{ version }}) </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #loading>
+    <div class="full-screen-loading">
+        <app-loading></app-loading>
+    </div>
+</ng-template>
+<link rel="stylesheet" [href]="cssResource">

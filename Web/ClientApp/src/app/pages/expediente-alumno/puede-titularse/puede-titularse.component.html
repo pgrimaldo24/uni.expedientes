@@ -1,0 +1,74 @@
+<div *ngIf="!data">
+  <div style="width: 100%; height: 200px;" *blockUI="blockIdentity"></div>
+</div>
+<div class="card card-body" *ngIf="data">
+  <div class="row pl-4">
+    <div class="col-3 text-right pr-2 mb-2">{{ 'pages.listadoExpediente.versionDelPlan' | translate }} </div>
+    <div class="col-9">{{ data.plan?.versionesPlanes[0]?.nro && !expedienteAlumno?.puedeTitular ?
+      data.plan?.versionesPlanes[0]?.nro : '-' }}</div>
+    <div class="col-3 text-right pr-2 mb-2">{{ 'pages.listadoExpediente.nodoDeIngreso' | translate }} </div>
+    <div class="col-9">{{ data.viaAccesoPlan?.nodo?.nombre }}</div>
+    <div class="col-3 text-right pr-2 mb-2">{{ 'pages.listadoExpediente.puedeTitular' | translate }} </div>
+    <div class="col-9">{{ (expedienteAlumno?.puedeTitular ? 'pages.puedeTitularse.yes' : 'pages.puedeTitularse.no') |
+      translate }}</div>
+    <div class="col-3 text-right pr-2 mb-2" *ngIf="!expedienteAlumno?.puedeTitular">{{
+      'pages.listadoExpediente.superadoPlan' | translate }} </div>
+    <div class="col-9" *ngIf="!expedienteAlumno?.puedeTitular">{{ (expedienteAlumno?.esPlanSuperado?.esSuperado ?
+      'pages.puedeTitularse.yes' : 'pages.puedeTitularse.no') | translate }}</div>
+    <div class="col-3 text-right pr-2 mb-2" *ngIf="!expedienteAlumno?.puedeTitular">{{
+      'pages.listadoExpediente.causaInsuperacion' | translate }} </div>
+    <div class="col-9" *ngIf="!expedienteAlumno?.puedeTitular">
+      <div *ngFor="let causa of expedienteAlumno?.esPlanSuperado?.causasInsuperacion">{{ causa }}</div>
+    </div>
+    <div class="col-3 text-right pr-2 mb-2" *ngIf="!expedienteAlumno?.puedeTitular">{{
+      'pages.listadoExpediente.matriculaOk' | translate }} </div>
+    <div class="col-9" *ngIf="!expedienteAlumno?.puedeTitular">{{ (expedienteAlumno?.matriculasOk ?
+      'pages.puedeTitularse.yes' : 'pages.puedeTitularse.no') | translate }}</div>
+    <div class="col-3 text-right pr-2 mb-2" *ngIf="expedienteAlumno?.causasFalloMatriculas.length > 0">
+      {{ 'pages.listadoExpediente.causasFalloMatriculas' | translate }}
+    </div>
+    <div class="col-9">
+      <div *ngFor="let causa of expedienteAlumno?.causasFalloMatriculas">{{ causa }}</div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col">
+      <button class="btn btn-light" type="button" data-toggle="collapse" (click)="showHideNodosActuales()"
+        data-target="#contenedorNodosActuales" [attr.aria-expanded]="colapsadoNodosActuales"
+        aria-controls="contenedorNodosActuales">
+        ► {{ 'pages.listadoExpediente.nodosActuales' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="colapsadoNodosActuales"
+    style="border-bottom: 1px solid lightgrey; margin: 0 2px; margin-bottom: -1px;"></div>
+  <div id="contenedorNodosActuales" class="collapse" [ngbCollapse]="colapsadoNodosActuales">
+    <div class="card card-body">
+      <app-nodos-actuales [rows]="rowsNodosActuales"></app-nodos-actuales>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col">
+      <button class="btn btn-light" type="button" data-toggle="collapse" (click)="showHideHitosObtenidos()"
+        data-target="#contenedorHitosObtenidos" [attr.aria-expanded]="colapsadoHitosObtenidos"
+        aria-controls="contenedorHitosObtenidos">
+        ► {{ 'pages.listadoExpediente.hitosObtenidos' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="colapsadoHitosObtenidos"
+    style="border-bottom: 1px solid lightgrey; margin: 0 2px; margin-bottom: -1px;"></div>
+  <div id="contenedorHitosObtenidos" class="collapse" [ngbCollapse]="colapsadoHitosObtenidos">
+    <div class="card card-body">
+      <app-hitos-obtenidos [rows]="rowsHitosObtenidos"></app-hitos-obtenidos>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="mt-2 col d-flex justify-content-start">
+    <button type="button" class="btn btn-primary btn-sm mr-2" [routerLink]="['/ExpedienteAlumno/List']">
+      {{ 'common.volver' | translate }}
+    </button>
+  </div>
+</div>

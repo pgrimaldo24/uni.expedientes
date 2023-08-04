@@ -1,0 +1,10 @@
+<div class="col">
+  <div class="page-title"> {{ 'pages.show.titlePage' | translate }} </div>
+  <app-tabs [idExpedienteAlumno]="idAlumno" [isReadOnly]="isReadOnly" [section]="section"></app-tabs>
+  <div class="row">
+    <div class="mt-2 col d-flex justify-content-start">
+      <button type="button" class="btn btn-primary btn-sm mr-2" [routerLink]="['/ExpedienteAlumno/List']">
+        {{ 'common.volver' | translate }}
+      </button>
+    </div>
+  </div>

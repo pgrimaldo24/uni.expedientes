@@ -1,0 +1,21 @@
+<fieldset class="fieldset-border">
+    <legend class="legend-border">
+        {{ 'pages.expedienteTabs.resumen.cronologiaTitle' | translate }}
+    </legend>
+    <div class="col cronologia">
+        <div class="row hito" *ngFor="let hito of hitosConseguidos">
+            <div class="col-12 pr-5 text-right">
+                <i *ngIf="hito.tipoConseguido.esPrimeraMatricula || hito.tipoConseguido.esTrabajoFinEstudio"
+                    class="fas fa-info-circle icon-popup"
+                    (click)="loadModalCronologia(hito.tipoConseguido.esPrimeraMatricula)"></i>
+                <span class="font-weight-bold">{{ hito.nombre }}</span><br />
+                <span>{{ hito.fechaInicio }}</span>
+            </div>
+            <div class=" icon-cronologia">
+                <i class="{{ hito.tipoConseguido.icono }}"></i>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<app-popup-cronologia #modalCronologia [expedienteAlumno]="expedienteAlumno" [datosErp]="datosErp">
+</app-popup-cronologia>

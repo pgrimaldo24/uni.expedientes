@@ -1,0 +1,181 @@
+<div class="card card-body">
+  <fieldset class="fieldset-border">
+    <legend class="legend-border">
+      {{ 'pages.observations.filtro' | translate }}
+    </legend>
+    <div class="col">
+      <div>
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row form-group">
+                <label class="form-label col-sm-1"
+                  >{{ 'pages.observations.desde' | translate }}:
+                </label>
+                <div class="col-sm-3">
+                  <app-datepicker
+                    name="fechaDesde"
+                    [(ngModel)]="filters.fechaDesde"
+                  >
+                  </app-datepicker>
+                </div>
+                <label class="form-label col-sm-1"
+                  >{{ 'pages.observations.hasta' | translate }}:</label
+                >
+                <div class="col-sm-3">
+                  <app-datepicker
+                    name="fechaHasta"
+                    [(ngModel)]="filters.fechaHasta"
+                  >
+                  </app-datepicker>
+                </div>
+                <div class="col-sm-4"></div>
+              </div>
+              <div class="row form-group">
+                <label class="col-sm-1">{{
+                  'pages.observations.texto' | translate
+                }}</label>
+                <div class="col-sm-7">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    name="texto"
+                    placeholder="{{
+                      'pages.observations.cargoNamePlaceholder' | translate
+                    }}"
+                    [(ngModel)]="filters.texto"
+                  />
+                </div>
+                <div class="col-sm-4"></div>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="mt-2 col d-flex justify-content-end">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-sm mr-2"
+                  (click)="buscar()"
+                >
+                  {{ 'common.buscar' | translate }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="limpiar()"
+                >
+                  {{ 'common.limpiar' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="fieldset-border">
+    <legend class="legend-border">
+      {{ 'pages.observations.observaciones' | translate }}
+    </legend>
+    <div class="col">
+      <div class="card-container-btn">
+        <div class="card-btn-item" *ngIf="!isReadOnly">
+          <button
+            (click)="newObservacion()"
+            type="button"
+            class="btn btn-primary btn-sm mb-2"
+          >
+            {{ 'pages.observations.nuevaAnotacion' | translate }}
+          </button>
+        </div>
+      </div>
+      <app-data-table
+        #tableObservaciones
+        [columns]="columns"
+        [rows]="rows"
+        [total]="totalElements"
+        [cellsTemplate]="{
+          acciones: options,
+          fecha: fecha,
+          ambito: ambito,
+          nota: nota
+        }"
+        [selectable]="true"
+        [page]="pageIndex"
+        [count]="pageCount"
+        (onLoad)="search($event)"
+      >
+        <ng-template #nota let-data>
+          <span
+            class="span-link"
+            [popoverTitle]="titleNota"
+            [ngbPopover]="dataNota"
+            [autoClose]="'outside'"
+            popoverClass="nota__popover"
+          >
+            {{ 'pages.observations.verNota' | translate }}
+          </span>
+          <ng-template #titleNota>{{
+            'pages.observations.nota' | translate
+          }}</ng-template>
+          <ng-template #dataNota>
+            <div [innerHtml]="data.object.mensaje"></div>
+          </ng-template>
+        </ng-template>
+        <ng-template #fecha let-data>
+          <span>
+            {{ data.object.fecha | dateToLocalString }}
+          </span>
+        </ng-template>
+        <ng-template #ambito let-data>
+          <span *ngIf="!data.object.esRestringida">
+            {{
+              (data.object.esPublica
+                ? 'pages.observations.publica'
+                : 'pages.observations.privada'
+              ) | translate
+            }}
+          </span>
+          <span *ngIf="data.object.esRestringida">
+            <span
+              [popoverTitle]="titleAmbito"
+              [ngbPopover]="dataAmbito"
+              [autoClose]="'outside'"
+              class="span-link"
+            >
+              {{ 'pages.observations.restringida' | translate }}
+            </span>
+            <ng-template #titleAmbito>{{
+              'pages.observations.roles' | translate
+            }}</ng-template>
+            <ng-template #dataAmbito>
+              <div *ngFor="let rolAnotacion of data.object.rolesAnotaciones">
+                {{ rolAnotacion.rolName }}
+              </div>
+            </ng-template>
+          </span>
+        </ng-template>
+        <ng-template #options let-data>
+          <div
+            class="card-options text-center"
+            *ngIf="!isReadOnly && (userId == data.object.idRefCuentaSeguridad || esAdmin)"
+          >
+            <button
+              class="btn btn-light mr-2"
+              (click)="editObservacion(data.object)"
+            >
+              <span class="fas fa-pencil-alt"></span>
+            </button>
+            <button
+              class="btn btn-light"
+              (click)="deleteObservacion(data.object)"
+            >
+              <span class="fas fa-trash"></span>
+            </button>
+          </div>
+        </ng-template>
+      </app-data-table>
+    </div>
+  </fieldset>
+  <app-observacion-form #openForm></app-observacion-form>
+  <app-confirmation-modal #confirmModal></app-confirmation-modal>
+</div>

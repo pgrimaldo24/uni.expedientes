@@ -1,0 +1,56 @@
+<div class="combobox-container-main" [class.disabled-combobox]="disable"
+  [ngClass]="expanded ? 'container-expanded' : 'container-collapsed'">
+  <ng-container *ngIf="!multiSelect; else multiSelectActive">
+    <div class="container-selected" (click)="expandCollapse($event)">
+      <span [title]="currentValue ? currentValue.text : 'Seleccione un elemento'"
+        [ngClass]="currentValue ? 'selected-value': 'place-holder'">
+        {{currentValue ? currentValue.text : 'Seleccione un elemento'}}</span>
+      <a *ngIf="currentValue != null && !disable" tabIndex="-1" (click)="clearSelected($event)" class="clear"><i
+          class="fas fa-times"></i></a>
+      <a tabIndex="-1" href="javascript:void(0);" class="down-up" [ngClass]="{'text-secondary' : disable}">
+        <i [ngClass]="expanded ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i>
+      </a>
+    </div>
+  </ng-container>
+  <ng-template #multiSelectActive>
+    <div class="container-selected" (click)="expandCollapse($event)">
+      <div class="container-selected-multiple">
+        <div class="place-holder" *ngIf="selectElements">Selecciona los elementos</div>
+        <span *ngFor="let item of currentValue" [title]="currentValue ? item.text : 'Seleccione los elementos'">
+          {{ currentValue ? item.text : 'Seleccione los elementos'}}
+          <button type="button" class="close" (click)="clearItemSelect(item)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </span>
+      </div>
+      <a *ngIf="currentValue != null && !disable" tabIndex="-1" (click)="clearSelected($event)" class="clear">
+        <i class="fas fa-times"></i>
+      </a>
+      <a tabIndex="-1" href="javascript:void(0);" class="down-up" [ngClass]="{'text-secondary' : disable}">
+        <i [ngClass]="expanded ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i>
+      </a>
+    </div>
+  </ng-template>
+  <div class="container-search-items" *ngIf="expanded">
+    <div class="container-search">
+      <input #search [formControl]="input" />
+      <ng-template *ngIf="loading; then iconLoading else iconSearch"></ng-template>
+      <ng-template #iconSearch>
+        <a tabIndex="-1" href="javascript:void(0);"><i class="fas fa-search"></i></a>
+      </ng-template>
+      <ng-template #iconLoading>
+        <a tabIndex="-1" href="javascript:void(0);"><i class="loading"></i></a>
+      </ng-template>
+    </div>
+    <div class="container-items">
+      <div class="panel-scroll-bar" (scroll)="scroll($event)">
+        <ul>
+          <li *ngFor="let item of (serverSide ? elements : (hasValueInput ? filtered : elements))" id="{{item.id}}"
+            (click)="clickItem(item)">
+            {{item.text}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

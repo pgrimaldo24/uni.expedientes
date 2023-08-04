@@ -1,0 +1,137 @@
+<ul class="{{ isRoot ? 'root-node ' : '' }}node-container">
+  <li *ngIf="isRoot" class="mb-1 rootNode">
+    <div class="tree-title row ml-2 mr-2">
+      <a
+        *ngIf="allCollapsable"
+        href="#"
+        (click)="collapseExpandAll()"
+        class="ml-1 expando mr-2"
+        [attr.title]="expandRootAll ? 'contraer todo' : 'expandir todo'"
+      >
+        <span
+          *ngIf="collapseAll"
+          [ngTemplateOutlet]="collapseAll"
+          [ngTemplateOutletContext]="{ node: null }"
+        ></span>
+        <i
+          *ngIf="!collapseAll"
+          [ngClass]="
+            expandRootAll
+              ? 'far fa-lg fa-minus-square'
+              : 'far fa-lg fa-plus-square'
+          "
+        ></i>
+      </a>
+      <span
+        (click)="onClickRoot($event)"
+        class="mr-2"
+        [attr.title]="expandRoot ? 'contraer' : 'expandir'"
+      >
+        <i
+          *ngIf="!collapseIcon"
+          [ngClass]="
+            expandRoot ? 'fas fa-lg fa-angle-down' : 'fas fa-lg fa-angle-right'
+          "
+        ></i>
+        <span
+          *ngIf="collapseIcon"
+          [ngTemplateOutlet]="collapseIcon"
+          [ngTemplateOutletContext]="{ node: null }"
+        ></span>
+      </span>
+      <div class="tree-node-text rootNodeTag" (click)="onClickRootTag()">
+        {{ rootText }}
+      </div>
+    </div>
+    <app-tree-view
+      [isRoot]="false"
+      [treeData]="treeData"
+      [collapseAll]="collapseAll"
+      [collapseIcon]="collapseIcon"
+      [allCollapsable]="allCollapsable"
+    >
+    </app-tree-view>
+  </li>
+  <span *ngIf="!isRoot">
+    <li
+      *ngFor="let node of treeData"
+      id="{{ node.name }}-{{ node.id }}"
+      class="mb-1"
+    >
+      <div class="tree-title row ml-2 mr-2">
+        <a
+          *ngIf="allCollapsable"
+          href="#"
+          (click)="collapseExpand(node)"
+          class="ml-1 expando mr-2"
+          [attr.title]="
+            getShowNode(node) == true ? 'contraer todo' : 'expandir todo'
+          "
+        >
+          <span
+            *ngIf="collapseAll"
+            [ngTemplateOutlet]="collapseAll"
+            [ngTemplateOutletContext]="{ node: node }"
+          ></span>
+          <i
+            *ngIf="!collapseAll"
+            [ngClass]="
+              getShowNode(node) == true
+                ? 'far fa-lg fa-minus-square'
+                : 'far fa-lg fa-plus-square'
+            "
+          ></i>
+        </a>
+        <span
+          (click)="toggleChild(node)"
+          class="icon mr-2"
+          [attr.title]="getShowNode(node) == true ? 'contraer' : 'expandir'"
+        >
+          <i
+            *ngIf="!collapseIcon"
+            [ngClass]="
+              getShowNode(node) == true
+                ? 'fas fa-lg fa-angle-down'
+                : 'fas fa-lg fa-angle-right'
+            "
+          ></i>
+          <span
+            *ngIf="collapseIcon"
+            [ngTemplateOutlet]="collapseIcon"
+            [ngTemplateOutletContext]="{ node: node }"
+          ></span>
+        </span>
+        <div class="col tree-node-text" (click)="onClick(node)">
+          {{ node.name
+          }}<span *ngIf="node.value != null">: {{ node.value }}</span>
+          <span class="espacio"></span>
+          <ng-container>
+            <span *ngFor="let opcion of node.opciones">
+              <ng-container [ngSwitch]="opcion.type">
+                <ng-container *ngSwitchCase="'link'">
+                  <a (click)="onClickOption(opcion, node.id)">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </ng-container>
+                <ng-container *ngSwitchCase="'delete'">
+                  <a (click)="onClickOption(opcion,node.id)">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </ng-container>
+              </ng-container>
+            </span>
+          </ng-container>
+        </div>
+      </div>
+      <app-tree-view
+        *ngIf="getShowNode(node) == true"
+        [isRoot]="false"
+        [treeData]="node.nodes"
+        [collapseAll]="collapseAll"
+        [collapseIcon]="collapseIcon"
+        [allCollapsable]="allCollapsable"
+      >
+      </app-tree-view>
+    </li>
+  </span>
+</ul>

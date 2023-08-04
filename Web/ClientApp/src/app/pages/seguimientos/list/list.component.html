@@ -1,0 +1,22 @@
+<div class="col">
+  <div class="page-title"> {{ 'pages.listadoSeguimientos.titlePage' | translate }} </div>
+</div>
+<app-filtro (searchEvent)="applySearchFilter($event)" (cleanEvent)="cleanTable()" [historial]="historial"
+  [cacheHistorial]="cacheHistorial" [isSeguimiento]="true"></app-filtro>
+<div class="col">
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="row">
+        <h5 class="col card-title">
+          {{ 'common.resultados' | translate }}
+        </h5>
+      </div>
+      <app-data-table #table [columns]="columns" [rows]="rows" [total]="totalElements" (onLoad)="search($event)"
+        [cellsTemplate]="{ fecha: fecha }" [page]="pageIndex" [count]="count">
+        <ng-template #fecha let-data>
+          {{ data.object.fecha | dateToLocalString }}
+        </ng-template>
+      </app-data-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ titulo }}</h4>
+        <button type="button" class="close" aria-describedby="modal-title" (click)="closeModal(modal)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="arcoSeleccionado">
+            <div class="form-group">
+                <label class="title-superado"
+                    [ngClass]="arcoSeleccionado.creditosObtenidos >= arcoSeleccionado.creditosRequeridos ? 'text-success' : 'text-danger'">
+                    {{ (arcoSeleccionado.creditosObtenidos >= arcoSeleccionado.creditosRequeridos ?
+                    'pages.expedienteTabs.calificaciones.superado' : 'pages.expedienteTabs.calificaciones.noSuperado') |
+                    translate }}
+                </label>
+            </div>
+            <div class="row form-group">
+                <div class="col-12" *ngFor="let bloque of arcoSeleccionado.bloques">
+                    <fieldset class="fieldset-border">
+                        <legend class="legend-border">
+                            {{ bloque.nombre }}
+                        </legend>
+                        <div *ngFor="let item of bloque.tiposAsignaturas">
+                            <div class="header-tipo-asignatura">
+                                <span class="float-left">{{ item.tipoAsignatura.nombre }} <i
+                                        [ngClass]="item.creditosAsignaturas >= item.minCreditos ? 'fa-check text-success' : 'fa-times text-danger'"
+                                        class="fas"></i></span>
+                                <span class="float-right">{{ getCreditosRequeridosObtenidos(item) }}</span>
+                            </div>
+                            <app-data-table #table [columns]="columns" [rows]="item.rowsBloques"
+                                [pageLengthOption]="false"
+                                [cellsTemplate]="{ asignatura: asignatura, ects: ects, calificacion: calificacion }">
+                                <ng-template #asignatura let-data>
+                                    <div *ngIf="!data.rowData.esReconocimiento">
+                                        {{data.rowData.asignatura}}
+                                    </div>
+                                    <div *ngIf="data.rowData.esReconocimiento">
+                                        <div class="title-reconocimiento">{{ 'pages.expedienteTabs.calificaciones.reconocimientoConOrigen' | translate }}</div>
+                                        <span class="reconocimiento" [innerHTML]="data.rowData.asignatura"></span>
+                                    </div>
+                                </ng-template>
+                                <ng-template #ects let-data>
+                                    <div *ngIf="!data.rowData.esReconocimiento">
+                                        {{data.rowData.ects}}
+                                    </div>
+                                    <div *ngIf="data.rowData.esReconocimiento">
+                                        <div>&nbsp;</div>
+                                        <span class="reconocimiento" [innerHTML]="data.rowData.ects"></span>
+                                    </div>
+                                </ng-template>
+                                <ng-template #calificacion let-data>
+                                    <div *ngIf="!data.rowData.esReconocimiento">
+                                        {{data.rowData.calificacion}}
+                                    </div>
+                                    <div *ngIf="data.rowData.esReconocimiento">
+                                        <div>&nbsp;</div>
+                                        <span class="reconocimiento" [innerHTML]="data.rowData.calificacion"></span>
+                                    </div>
+                                </ng-template>
+                            </app-data-table>
+                        </div>
+                        <div *ngFor="let subBloque of bloque.subBloques">
+                            <fieldset class="fieldset-border">
+                                <legend class="legend-border">
+                                    {{ subBloque.nombre }}
+                                </legend>
+                                <div *ngFor="let item of subBloque.tiposAsignaturas">
+                                    <div class="header-tipo-asignatura">
+                                        <span class="float-left">{{ item.tipoAsignatura.nombre }} <i
+                                                [ngClass]="item.creditosAsignaturas >= item.minCreditos ? 'fa-check text-success' : 'fa-times text-danger'"
+                                                class="fas"></i></span>
+                                        <span class="float-right">{{ item.minCreditos }} {{
+                                            'pages.expedienteTabs.calificaciones.creditosRequeridos' | translate }} / {{
+                                            item.creditosAsignaturas }} {{
+                                            'pages.expedienteTabs.calificaciones.creditosObtenidos' | translate
+                                            }}</span>
+                                    </div>
+                                    <app-data-table #table [columns]="columns" [rows]="item.rowsBloques"
+                                        [pageLengthOption]="false">
+                                    </app-data-table>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="col-12">
+                    <div class="header-tipo-asignatura">
+                        <span class="float-left">{{ 'pages.expedienteTabs.calificaciones.totalCreditos' | translate
+                            }}</span>
+                        <span class="float-right">{{ arcoSeleccionado.creditosRequeridos }} {{
+                            'pages.expedienteTabs.calificaciones.creditosRequeridos' | translate }} / {{
+                            arcoSeleccionado.creditosObtenidos }} {{
+                            'pages.expedienteTabs.calificaciones.creditosObtenidos' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,153 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+.background-image-body {
+  background: url(../assets/images/fondo.jpg) !important;
+  font-size: 14px;
+}
+
+.modal-backdrop {
+  opacity: 0.1 !important;
+}
+
+.is-invalid ~ .group-show-errors .invalid-feedback {
+  display: block;
+}
+
+.is-invalid .combobox-container-main .container-selected:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.is-invalid .combobox-container-main .container-selected {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.is-valid .combobox-container-main .container-selected:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.is-valid .combobox-container-main .container-selected {
+  border-color: #28a745;
+  padding-right: calc(1.5em + 0.75rem);
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.card-body .row {
+  padding-bottom: 3px;
+}
+
+.tooltip-estado .tooltip-inner {
+  background-color: rgb(74, 161, 236);
+}
+
+.tooltip-estado .arrow::before {
+  border-top-color: rgb(74, 161, 236);
+}
+
+fieldset.fieldset-border {
+  border: 1.5px solid #cecece !important;
+  border-radius: 0.4rem;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 1.5em 0 !important;
+  -webkit-box-shadow: 0 0 0 0 #cecece;
+  box-shadow: 0 0 0 0 #cecece;
+}
+
+legend.legend-border {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  text-align: left !important;
+  width: auto;
+  padding: 0 10px;
+  border-bottom: none;
+}
+
+.popover {
+  & {
+    max-width: 600px !important;
+    min-height: 100px;
+  }
+
+  &--container {
+    max-width: 80px !important;
+  }
+
+  &-body {
+    margin-bottom: 4px;
+  }
+  &-container-item {
+    padding: 6px 12px;
+    background: #e5e7e9;
+    border-radius: 5px;
+    height: auto;
+  }
+  &-container-laboral {
+    padding: 6px 12px;
+    background: #e5e7e9;
+    border-radius: 5px;
+  }
+}
+
+ngb-popover-window {
+  left: -10px !important;
+  width: 500px;
+}
+ngb-popover-window.labor__popover {
+  left: -10px !important;
+  width: 350px;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #115784;
+}
+
+.row-item:hover,
+.row-item-selectable:hover {
+  .highlight {
+    color: white;
+  }
+}
+
+.label-expediente-bloqueado {
+  color: red;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.div-colapsado {
+  border-bottom: 1px solid lightgrey;
+  margin: 0 2px;
+  margin-bottom: -1px;
+}
+
+.myConfigToast {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 6px;
+  padding: 15px 15px 15px 50px;
+  width: 500px;
+  border-radius: 3px 3px 3px 3px;
+  background-position: 15px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  box-shadow: 0 0 12px #999999;
+  color: #ffffff;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.conSaldo {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}

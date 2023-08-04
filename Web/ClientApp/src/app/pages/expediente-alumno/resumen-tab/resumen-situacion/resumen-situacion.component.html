@@ -1,0 +1,23 @@
+<fieldset class="fieldset-border">
+    <legend class="legend-border">
+        {{ 'pages.expedienteTabs.resumen.situacionTitle' | translate }}
+    </legend>
+    <div class="col">
+        <div class="row form-group" *ngIf="expedienteAlumno.estado || tipoSituacionEstadoExpediente"
+            [style.color]="expedienteAlumno.estado?.color">
+            <h4 class="col-12 text-bold">{{ expedienteAlumno.estado?.nombre | uppercase }}</h4>
+            <strong class="col-12" *ngIf="tipoSituacionEstadoExpediente">{{ tipoSituacionEstadoExpediente.descripcion }}
+                ({{ fecha }})</strong>
+        </div>
+        <div class="row">
+            <strong class="col-12 pb-2">{{ 'pages.expedienteTabs.resumen.condicionesPendientes' | translate }}</strong>
+            <strong class="col-12 font-italic" *ngFor="let consolidacion of consolidacionesRequisitosExpedientes">
+                <i class="fas fa-circle mr-2" [ngClass]="{
+                    isEstadoNoProcesada: consolidacion.isEstadoNoProcesada,
+                    isEstadoPendiente: consolidacion.isEstadoPendiente
+                  }"></i>
+                <span>{{ consolidacion.requisitoExpediente.nombre}}</span>
+            </strong>
+        </div>
+    </div>
+</fieldset>

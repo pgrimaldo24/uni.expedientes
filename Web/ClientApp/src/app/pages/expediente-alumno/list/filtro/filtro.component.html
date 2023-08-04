@@ -1,0 +1,149 @@
+<div class="col">
+    <button class="btn btn-light" type="button" data-toggle="collapse" (click)="onCollapse()"
+        data-target="#contenedorFiltros" [attr.aria-expanded]="!isCollapsed" aria-controls="contenedorFiltros">
+        <i class="fas fa-filter"></i>
+        {{ 'common.filtros' | translate }}
+    </button>
+    <ng-container *ngIf="isCollapsed">
+        <ng-container *ngFor="let filteredValue of clauses">
+            <div class="btn btn-primary btn-sm ml-1 disabled">
+                <span> {{ filteredValue.label }}: {{ filteredValue.text }} </span>
+                <button type="button" class="close" (click)="removeFilterField(filteredValue.key)">
+                    <span class="ml-1" aria-hidden="true"
+                        style="vertical-align: top; color: white; text-shadow: none">&times;</span>
+                </button>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div id="contenedorFiltros" class="collapse" [ngbCollapse]="isCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="filterForm" novalidate (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.expediente' | translate }}</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.idExpediente' | translate}}"
+                                        [formControlName]="controls.idExpediente" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.universidad' | translate }}</label>
+                                <div class="col-sm-8">
+                                    <unir-combobox [serverSide]="true" [config]="configComboUniversidad"
+                                        [formControlName]="controls.universidad">
+                                    </unir-combobox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.planesDeEstudio' | translate
+                                    }}</label>
+                                <div class="col-sm-8">
+                                    <unir-combobox [serverSide]="true" [multiSelect]="true"
+                                        [config]="configComboPlanEstudio" [formControlName]="controls.planesEstudio"
+                                        #comboPlanEstudio>
+                                    </unir-combobox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.idRefPlan' | translate }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.idRefPlan' | translate}}"
+                                        [formControlName]="controls.idRefPlan" />
+                                </div>
+                            </div>
+                            <div *ngIf="isSeguimiento">
+                                <div class="form-group row">
+                                    <label class="col-sm-4">{{ 'pages.listadoSeguimientos.tipo' | translate }}</label>
+                                    <div class="col-sm-8">
+                                        <unir-combobox [serverSide]="true" [config]="configComboTipoSeguimiento"
+                                            [formControlName]="controls.tipoSeguimiento">
+                                        </unir-combobox>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4">{{ 'pages.listadoSeguimientos.fecha' | translate }}</label>
+                                    <div class="col-sm-8 row">
+                                        <div class="col-sm-6">
+                                            <app-datepicker [formControlName]="controls.fechaDesde"></app-datepicker>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <app-datepicker [formControlName]="controls.fechaHasta"></app-datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.nombreAlumno' | translate }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.nombreAlumno' | translate}}"
+                                        [formControlName]="controls.nombreAlumno" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.primerApellido' | translate
+                                    }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.primerApellido' | translate}}"
+                                        [formControlName]="controls.primerApellido" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.segundoApellido' | translate
+                                    }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.segundoApellido' | translate}}"
+                                        [formControlName]="controls.segundoApellido" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.nroDocIdentificacion' | translate
+                                    }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.nroDocIdentificacion' | translate}}"
+                                        [formControlName]="controls.nroDocIdentificacion" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoExpediente.idRefIntegracion' | translate
+                                    }}</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="{{'pages.listadoExpediente.placeholder.idRefIntegracion' | translate}}"
+                                        [formControlName]="controls.idRefIntegracion" />
+                                </div>
+                            </div>
+                            <div *ngIf="isSeguimiento" class="form-group row">
+                                <label class="col-sm-4">{{ 'pages.listadoSeguimientos.usuario' | translate }}</label>
+                                <div class="col-sm-8">
+                                    <unir-combobox [serverSide]="true" [config]="configComboUsuario"
+                                        [formControlName]="controls.usuario">
+                                    </unir-combobox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mt-2 col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                {{ 'common.buscar' | translate }}
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="cleanFilters()">
+                                {{ 'common.limpiar' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

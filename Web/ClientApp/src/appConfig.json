@@ -1,0 +1,5 @@
+{
+  "securityUri": "https://crosscutting.desunir.net",
+  "clientId": "expedientes.academicos.client.dev",
+  "urlErpAcademico": "https://erpacademico.desunir.net"
+}

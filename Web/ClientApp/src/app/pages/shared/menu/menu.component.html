@@ -1,0 +1,53 @@
+<div class="main-menu">
+  <nav class="navbar navbar-expand-sm navbar-light">
+    <a *ngIf="!isNullOrEmpty(menuPrincipal)" href="'/'" class="navbar-brand"
+      href="javascript:void(0);">{{menuPrincipal}}</a>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" data-toggle="collapse" data-target="#nav-menu"
+      aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav-menu" [ngClass]="{ 'show': navbarOpen }">
+      <ul class="navbar-nav mr-auto">
+        <li *ngFor="let menu of menus" [ngClass]="(menu.active ? 'nav-item active' : 'nav-item')">
+          <a class="nav-link" (click)="changeMenu(menu)" [routerLink]="menu.route">
+            <ng-container *ngIf="!isNullOrEmpty(menu.iconClass);then menuTitleIcon; else menuTitle">
+            </ng-container>
+            <ng-template #menuTitleIcon>
+              <i [ngClass]="menu.iconClass"><span class="text-menu">&nbsp;{{menu.title}}</span></i>
+            </ng-template>
+            <ng-template #menuTitle>
+              <span class="text-menu">{{menu.title}}</span>
+            </ng-template>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav navbar-nav-container-two">
+        <li *ngFor="let menu of configMenus">
+          <a class="nav-link" (click)="toggleSubMenu(menu.route)" (blur)="unSelected($event)"
+             [routerLink]="menu.subMenu.length > 0 ? [] : [menu.route]">
+            <ng-container *ngIf="!isNullOrEmpty(menu.iconClass);then menuTitleIcon; else menuTitle">
+            </ng-container>
+            <ng-template #menuTitleIcon>
+              <i [ngClass]="menu.iconClass"><span class="text-menu">&nbsp;{{menu.title}}</span></i>
+            </ng-template>
+            <ng-template #menuTitle>
+              <span class="text-menu">{{menu.title}}</span>
+            </ng-template>
+          </a>
+          <div class="sub-menu--two" *ngIf="menu.subMenu.length > 0" [hidden]="dropDownMenuByRoute !== menu.route">
+            <ul class="sub-menu-options" [hidden]="dropDownMenuByRoute !== menu.route"
+                [class.is-active]="dropDownMenuByRoute === menu.route">
+              <li *ngFor="let subMenu of menu.subMenu" [routerLink]="subMenu.route" [class.sub-menu-no-border]="menu.subMenu.length == 1"
+                  (click)="chosenOption(menu)">
+                <a>{{subMenu.title}}</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a class="nav-link" title="Salir" href="#" (click)="logoff()"><i class="fas fa-power-off"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

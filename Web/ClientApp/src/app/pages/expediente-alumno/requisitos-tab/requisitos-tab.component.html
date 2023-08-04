@@ -1,0 +1,40 @@
+<div class="card card-body">
+  <div class="row" [formGroup]="requisitoForm">
+    <div class="col-6" *blockUI="blockIdentityRequisito">
+      <div class="row form-group">
+        <div class="col">
+          <button type="button" class="btn btn-primary btn-sm" [disabled]="!isAdminGestor"
+            (click)="createConsolidacionesRequisitosExpediente()">{{
+            'pages.expedienteTabs.requisitos.crearRequisitosAsociados' | translate }}</button>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-md-4 col-form-label">
+          {{ 'pages.expedienteTabs.requisitos.requisitoAdicional' | translate }}
+        </label>
+        <div class="col-md-6">
+          <unir-combobox [serverSide]="true" [config]="configComboRequisito"
+            [formControlName]="formControls.requisitoAdicional"
+            [class.is-invalid]="ctrlInvalid(formControls.requisitoAdicional)">
+          </unir-combobox>
+          <div class="group-show-errors" *ngIf="ctrlInvalid(formControls.requisitoAdicional)">
+            <span class="invalid-feedback" *ngIf="ctrlField(formControls.requisitoAdicional).hasError('required')">
+              {{ 'validations.required' | translate }}
+            </span>
+          </div>
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn btn-primary btn-sm" [disabled]="!isAdminGestor"
+            (click)="createConsolidacionRequisito()"><i class="fas fa-plus fa-sm"></i></button>
+        </div>
+      </div>
+      <app-condiciones *ngIf="alumno" [alumno]="alumno" [idExpediente]="expedienteAlumno.id"></app-condiciones>
+    </div>
+    <div class="col-6">
+      <app-consolidar-requisito-form #consolidarRequisitoComponent [requisitoForm]="requisitoForm"
+        [idExpediente]="expedienteAlumno.id" [configuracionUniversidad]="configuracionUniversidad"
+        [blockIdentityRequisito]="blockIdentityRequisito" [alumno]="alumno">
+      </app-consolidar-requisito-form>
+    </div>
+  </div>
+</div>

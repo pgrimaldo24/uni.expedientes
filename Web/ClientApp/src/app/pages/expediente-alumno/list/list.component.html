@@ -1,0 +1,318 @@
+<div class="col">
+  <div class="page-title">
+    {{ 'pages.listadoExpediente.titlePage' | translate }}
+  </div>
+</div>
+<app-filtro
+  (searchEvent)="applySearchFilter($event)"
+  (cleanEvent)="cleanTable()"
+  [historial]="historial"
+  [cacheHistorial]="cacheHistorial"
+></app-filtro>
+<div class="col">
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="row">
+        <h5 class="col card-title">{{ 'common.resultados' | translate }}</h5>
+        <button class="btn card-btn-icon" type="button" (click)="reloadTable()">
+          <i class="fas fa-lg fa-sync-alt"></i>
+        </button>
+      </div>
+      <button
+        *appHasRoles="[roles.GESTOR_ROLE, roles.ADMIN_ROLE]"
+        type="button"
+        (click)="generateSolicitudTituloCertificado()"
+        class="btn btn-primary btn-sm mr-2 mb-2"
+        [disabled]="loadingGenerateSolicitudTitulo"
+      >
+        {{
+          'pages.listadoExpediente.generarSolicitudTituloCertificado'
+            | translate
+        }}
+        <span
+          class="spinner-border spinner-border-sm"
+          *ngIf="loadingGenerateSolicitudTitulo"
+        ></span>
+      </button>
+      <div *appHasRoles="[roles.GESTOR_ROLE, roles.ADMIN_ROLE]">
+        <div class="d-flex justify-content-center rounded select-massive mt-1 mb-3 p-1"
+          *ngIf="!loadingGenerateSolicitudTitulo && isAllChecked()">
+          <div *ngIf="!selectedAll">
+            {{
+            'pages.listadoExpediente.seleccionados'
+            | translate: { selected: rows.length }
+            }}
+            <button *ngIf="totalElements > rows.length && totalMaximoSeleccionado > rows.length"
+              class="btn btn-link font-weight-bold" (click)="selectAll()">
+              {{
+              'pages.listadoExpediente.seleccionarTodo'
+              | translate: { total: totalElements > totalMaximoSeleccionado ? totalMaximoSeleccionado : totalElements,
+              primeros: totalElements > totalMaximoSeleccionado ? ' primeros' : '' }
+              }}
+            </button>
+          </div>
+          <div *ngIf="selectedAll">
+            {{
+            'pages.listadoExpediente.seleccionadaTodo'
+            | translate: { total: totalElements > totalMaximoSeleccionado ? totalMaximoSeleccionado : totalElements,
+            primeros: totalElements > totalMaximoSeleccionado ? ' primeros' : '' }
+            }}
+            <button class="btn btn-link font-weight-bold" (click)="checkUncheckAll(false)">
+              {{ 'pages.listadoExpediente.anularSeleccion' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <app-data-table
+        #table
+        [columns]="columns"
+        [rows]="rows"
+        [total]="totalElements"
+        [columnsTemplate]="{ seleccion: checkSeleccion }"
+        [cellsTemplate]="{
+          acciones: options,
+          alumno: alumno,
+          fechas: fechas,
+          plan: plan,
+          expediente: expediente,
+          seleccion: check
+        }"
+        (onLoad)="search($event)"
+        [page]="pageIndex"
+        [count]="count"
+      >
+        <ng-template #check let-data>
+          <div class="text-center">
+            <input
+              [checked]="isChecked(data.object.id)"
+              type="checkbox"
+              (change)="checkExpediente($event, data.object)"
+            />
+          </div>
+        </ng-template>
+
+        <ng-template #options let-data>
+          <div class="overflow-hidden">
+            <div ngbDropdown container="body" placement="bottom-right">
+              <button
+                class="btn btn-link btn-sm context-menu"
+                ngbDropdownToggle
+              >
+                {{ 'common.opciones' | translate }}
+              </button>
+              <div ngbDropdownMenu placement="bottom-left">
+                <button
+                  ngbDropdownItem
+                  [routerLink]="
+                    isAdminGestor
+                      ? ['/ExpedienteAlumno/edit', data.object.id]
+                      : ['/ExpedienteAlumno/show', data.object.id]
+                  "
+                  [state]="{ section: 'resumen' }"
+                >
+                  {{ 'pages.listadoExpediente.tabs.resumen' | translate }}
+                </button>
+                <div class="dropdown-divider"></div>
+                <button
+                  ngbDropdownItem
+                  [routerLink]="
+                    isAdminGestor
+                      ? ['/ExpedienteAlumno/edit', data.object.id]
+                      : ['/ExpedienteAlumno/show', data.object.id]
+                  "
+                >
+                  {{
+                    (isAdminGestor ? 'common.editar' : 'common.mostrar')
+                      | translate
+                  }}
+                </button>
+                <button
+                  ngbDropdownItem
+                  [routerLink]="
+                    isAdminGestor
+                      ? ['/ExpedienteAlumno/edit', data.object.id]
+                      : ['/ExpedienteAlumno/show', data.object.id]
+                  "
+                  [state]="{ section: 'puedeTitularse' }"
+                >
+                  {{ 'pages.listadoExpediente.puedeTitularse' | translate }}
+                </button>
+                <button
+                  ngbDropdownItem
+                  [routerLink]="
+                    isAdminGestor
+                      ? ['/ExpedienteAlumno/edit', data.object.id]
+                      : ['/ExpedienteAlumno/show', data.object.id]
+                  "
+                  [state]="{ section: 'calificaciones' }"
+                >
+                  {{
+                    'pages.listadoExpediente.tabs.calificaciones' | translate
+                  }}
+                </button>
+                <div
+                  class="dropdown-divider"
+                  *appHasRoles="[roles.ADMIN_ROLE, roles.GESTOR_ROLE]"
+                ></div>
+                <button
+                  ngbDropdownItem
+                  [routerLink]="['/ExpedienteAlumno/edit', data.object.id]"
+                  *appHasRoles="[roles.ADMIN_ROLE, roles.GESTOR_ROLE]"
+                  [state]="{ section: 'anotaciones' }"
+                >
+                  {{ 'pages.listadoExpediente.tabs.anotaciones' | translate }}
+                  ({{ data.object.countAnotaciones }})
+                </button>
+                <button
+                  ngbDropdownItem
+                  [routerLink]="['/SeguimientoExpediente/List', data.object.id]"
+                  *appHasRoles="[roles.ADMIN_ROLE, roles.GESTOR_ROLE]"
+                >
+                  {{ 'pages.listadoExpediente.seguimientos' | translate }} ({{
+                    data.object.countSeguimientos
+                  }})
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #alumno let-data>
+          <span>{{ data.object.displayNameDocumentoIdentificacionAlumno }}</span
+          ><br />
+          <span *ngIf="data.object.displayNameNombreAlumno">
+            {{ data.object.displayNameNombreAlumno }}
+            <button
+              type="button"
+              class="btn"
+              [routerLink]="[
+                '/Alumno/show',
+                data.object.idRefIntegracionAlumno
+              ]"
+            >
+              <i class="fas fa-sign-in-alt"></i>
+            </button>
+          </span>
+        </ng-template>
+        <ng-template #fechas let-data>
+          <div>
+            <strong>{{
+              'pages.listadoExpediente.apertura' | translate
+            }}</strong>
+            <span *ngIf="data.object.fechaApertura">
+              {{ data.rowData.fechaApertura }}</span
+            >
+          </div>
+          <div>
+            <strong>{{
+              'pages.listadoExpediente.finalizacion' | translate
+            }}</strong>
+            <span *ngIf="data.object.fechaFinalizacion">
+              {{ data.rowData.fechaFinalizacion }}</span
+            >
+          </div>
+          <div class="certificado">
+            <span
+              [popoverTitle]="titleAmbito"
+              [ngbPopover]="dataAmbito"
+              [autoClose]="'outside'"
+              class="span-link"
+              (click)="getCertificados(data.object)"
+            >
+              {{ 'pages.listadoExpediente.certificados' | translate }}
+            </span>
+            <ng-template #titleAmbito>
+              {{ 'pages.listadoExpediente.certificados' | translate }}
+            </ng-template>
+            <ng-template #dataAmbito>
+              <div class="text-center" *ngIf="loadingCertificate">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              </div>
+              <div *ngIf="!loadingCertificate">
+                <div *ngIf="!certificados.length">
+                  {{
+                    'pages.listadoExpediente.mensajeCertificados' | translate
+                  }}
+                </div>
+                <div *ngFor="let certificado of certificados">
+                  {{ certificado }}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+        <ng-template #plan let-data>
+          <div [ngbTooltip]="tipContent">
+            <span *ngIf="data.object.nombreEstudio">{{
+              data.object.nombreEstudio
+            }}</span
+            ><br *ngIf="data.object.nombrePlan" />
+            <span *ngIf="data.object.nombrePlan">{{
+              data.object.nombrePlan
+            }}</span>
+          </div>
+          <ng-template #tipContent>
+            <table>
+              <tr>
+                <td>{{ 'pages.listadoExpediente.universidad' | translate }}</td>
+                <td>{{ data.object.universidadDisplayName }}</td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'pages.listadoExpediente.centroDeEstudio' | translate }}
+                </td>
+                <td>{{ data.object.centroEstudioDisplayName }}</td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'pages.listadoExpediente.tipoDeEstudio' | translate }}
+                </td>
+                <td>{{ data.object.tipoEstudioDisplayName }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'pages.listadoExpediente.estudio' | translate }}</td>
+                <td>{{ data.object.nombreEstudio }}</td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'pages.listadoExpediente.planDeEstudio' | translate }}
+                </td>
+                <td>{{ data.object.nombrePlan }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'pages.listadoExpediente.titulo' | translate }}</td>
+                <td>{{ data.object.tituloDisplayName }}</td>
+              </tr>
+            </table>
+          </ng-template>
+        </ng-template>
+        <ng-template #expediente let-data>
+          <span>{{ data.object.id }} </span
+          ><span *ngIf="data.object.acronimoUniversidad">
+            ({{ data.object.acronimoUniversidad }})
+          </span>
+          <br *ngIf="data.object.estadoDisplayName" />
+          <span *ngIf="data.object.estadoDisplayName"
+            >{{ data.object.estadoDisplayName }}
+          </span>
+          <span *ngIf="data.object.tipoSituacionDisplayName">
+            ({{ data.object.tipoSituacionDisplayName }})
+          </span>
+        </ng-template>
+        <ng-template #checkSeleccion>
+          <input
+            type="checkbox"
+            [disabled]="rows.length == 0"
+            [checked]="isAllChecked()"
+            (change)="checkExpedientesFiltered($event)"
+          />
+        </ng-template>
+      </app-data-table>
+    </div>
+  </div>
+</div>
+<app-show-generate-solicitud-titulo
+  (loadingGenerar)="getLoaderGenerarSolicitud($event)"
+  #modalShowGenerateSolicitudTitulo
+>
+</app-show-generate-solicitud-titulo>

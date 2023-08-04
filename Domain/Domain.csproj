@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>Unir.Expedientes.Domain</AssemblyName>
+    <RootNamespace>Unir.Expedientes.Domain</RootNamespace>
+    <Version>1.0.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unir.Framework.DomainSuperTypes" Version="3.0.1.11" />
+  </ItemGroup>
+
+</Project>

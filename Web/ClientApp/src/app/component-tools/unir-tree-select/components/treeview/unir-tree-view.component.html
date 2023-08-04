@@ -1,0 +1,14 @@
+<ng-template #defaultItemTemplate let-item="item">
+  <div class="form-inline" [ngClass]="{'row-item-selectable': item?.selectable, 'row-item': !item?.selectable}">
+    <span *ngIf="item.nodes" (click)="onCollapseExpand(item)">
+      <i *ngIf="!collapseIcon" class="far" [ngClass]="{'fa-plus-square': item.collapsed, 'fa-minus-square': !item.collapsed}"></i>
+      <span *ngIf="collapseIcon" [ngTemplateOutlet]="collapseIcon" [ngTemplateOutletContext]="{node: item}"></span>
+    </span>
+    <div class="col unir-combobox-tree--item" (click)="selectItem(item)" [innerHTML]="item.name | highlightText: searchText">
+    </div>
+  </div>
+</ng-template>
+<div class="treeview-container" [style.max-height.px]="maxHeight">
+  <unir-tree-view-item *ngFor="let item of items" [item]="item" [template]="defaultItemTemplate">
+  </unir-tree-view-item>
+</div>

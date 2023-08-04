@@ -1,0 +1,410 @@
+
+<div *blockUI="blockIdentity">
+  <div class="card card-body" *ngIf="data && expedienteAlumno">
+    <ng-container *ngIf="this.tieneExpedienteBloqueado == true">
+      <div class="row label-expediente-bloqueado">
+        {{ 'pages.editarExpediente.expedienteBloqueado' | translate }}
+      </div>
+    </ng-container>
+    <div class="row pl-4">
+      <div class="col-2 text-right pr-2 mb-2">
+        {{ 'pages.listadoExpediente.fechaApertura' | translate }}
+      </div>
+      <div class="col-10">
+        {{ expedienteAlumno.fechaApertura?.toString() | dateToLocalString }}
+      </div>
+      <div class="col-2 text-right pr-2 mb-2">
+        {{ 'pages.listadoExpediente.tipoDeVinculación' | translate }}
+      </div>
+      <div class="col-10">{{ this.tipoVinculacion ?? "-" | translate }}</div>
+    </div>
+    <div class="row" style="margin-top: 15px">
+      <div class="col">
+        <button
+          class="btn btn-light"
+          type="button"
+          data-toggle="collapse"
+          (click)="showHideTitulacion()"
+          data-target="#contenedorTitulacion"
+          [attr.aria-expanded]="colapsadoTitulacion"
+          aria-controls="contenedorTitulacion"
+        >
+          ► {{ 'pages.listadoExpediente.titulacion' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="row colapsado" *ngIf="colapsadoTitulacion"></div>
+    <div
+      id="contenedorTitulacion"
+      class="collapse"
+      [ngbCollapse]="colapsadoTitulacion"
+    >
+      <div class="card card-body">
+        <div class="row">
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.universidad' | translate }}
+          </div>
+          <div class="col-10">
+            {{
+              data.plan?.estudio?.areaAcademica?.centro?.universidad
+                ?.displayName
+            }}
+          </div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.centroDeEstudio' | translate }}
+          </div>
+          <div class="col-10">
+            {{ data.plan?.estudio?.areaAcademica?.centro?.nombre }}
+          </div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.tipoDeEstudio' | translate }}
+          </div>
+          <div class="col-10">{{ data.plan?.estudio?.tipo?.nombre }}</div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.estudio' | translate }}
+          </div>
+          <div class="col-10">{{ expedienteAlumno.nombreEstudio }}</div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.planDeEstudio' | translate }}
+          </div>
+          <div class="col-10">{{ expedienteAlumno.nombrePlan }}</div>
+          <div class="col-2 text-right pr-2 mb-2 con-combo">
+            {{ 'pages.listadoExpediente.versionDelPlan' | translate }}
+          </div>
+          <div class="col-10" *ngIf="!isReadOnly">
+            <unir-combobox
+              [serverSide]="true"
+              [config]="confCbVersionesPlan"
+              [(ngModel)]="combo.versionPlan"
+            >
+            </unir-combobox>
+          </div>
+          <div class="col-10" *ngIf="isReadOnly">
+            {{ data.versionPlan || '-' }}
+          </div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.titulo' | translate }}
+          </div>
+          <div class="col-10">{{ data.plan?.titulo?.displayName }}</div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.especializacion' | translate }}
+          </div>
+          <div class="col-10">
+            <div
+              *ngFor="
+                let especializacion of expedienteAlumno.expedientesEspecializaciones
+              "
+            >
+              {{ especializacion.displayName }}
+            </div>
+            <div
+              *ngIf="
+                expedienteAlumno.expedientesEspecializaciones.length == 0
+              "
+            >
+              {{ '-' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 15px">
+      <div class="col">
+        <button
+          class="btn btn-light"
+          type="button"
+          data-toggle="collapse"
+          (click)="showHideViaAccesoPlan()"
+          data-target="#contenedorViaAccesoPlan"
+          [attr.aria-expanded]="colapsadoViaAccesoPlan"
+          aria-controls="contenedorViaAccesoPlan"
+        >
+          ► {{ 'pages.listadoExpediente.viaDeAccesoPlan' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="row colapsado" *ngIf="colapsadoViaAccesoPlan"></div>
+    <div
+      id="contenedorViaAccesoPlan"
+      class="collapse"
+      [ngbCollapse]="colapsadoViaAccesoPlan"
+    >
+      <div class="card card-body">
+        <div class="row" *ngIf="!isReadOnly">
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.nodoDeIngreso' | translate }}
+          </div>
+          <div class="col-10">{{ data.viaAccesoPlan?.nodo?.nombre }}</div>
+          <div class="col-2 text-right pr-2 mb-2 con-combo">
+            {{ 'pages.listadoExpediente.viaDeAcceso' | translate }}
+          </div>
+          <div class="col-10">
+            <unir-combobox-tree
+              [serverSide]="true"
+              [config]="confCbAcceso"
+              [(ngModel)]="combo.acceso"
+            ></unir-combobox-tree>
+          </div>
+        </div>
+        <div class="row" *ngIf="isReadOnly">
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.nodoDeIngreso' | translate }}
+          </div>
+          <div class="col-10">{{ data.viaAccesoPlan?.nodo?.nombre }}</div>
+          <div class="col-2 text-right pr-2 mb-2">
+            {{ 'pages.listadoExpediente.viaDeAcceso' | translate }}
+          </div>
+          <div class="col-10">
+            {{
+              data.viaAccesoPlan?.viaAcceso
+                ?.displayNameClasificacionSuperViaAcceso
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 15px">
+      <div class="col">
+        <button
+          class="btn btn-light"
+          type="button"
+          data-toggle="collapse"
+          (click)="showHideTitulacionAcceso()"
+          data-target="#colapsadoTitulacionAcceso"
+          [attr.aria-expanded]="colapsadoTitulacionAcceso"
+          aria-controls="colapsadoTitulacionAcceso"
+        >
+          ► {{ 'pages.listadoExpediente.titulacionDeAcceso' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="row colapsado" *ngIf="colapsadoTitulacionAcceso"></div>
+    <div
+      id="colapsadoTitulacionAcceso"
+      class="collapse"
+      [ngbCollapse]="colapsadoTitulacionAcceso"
+    >
+      <div class="form-row">
+        <div class="card card-body" *ngIf="!isReadOnly">
+          <form [formGroup]="formTituacionAcceso" novalidate>
+            <div class="row">
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{ 'pages.listadoExpediente.titulo' | translate }}
+                {{ 'common.signoRequerido' | translate }}
+              </div>
+              <div class="col-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.titulo"
+                  maxlength="250"
+                />
+              </div>
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{ 'pages.editarExpediente.tipoEstudio' | translate }}
+              </div>
+              <div class="col-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.tipoEstudio"
+                  maxlength="250"
+                />
+              </div>
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{ 'pages.listadoExpediente.institucionDocente' | translate }}
+                {{ 'common.signoRequerido' | translate }}
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.institucionDocente"
+                  maxlength="250"
+                  readonly
+                />
+              </div>
+              <div class="col-1 d-flex align-items-center align-right">
+                <div>
+                  <a
+                    class="btn-link"
+                    type="button"
+                    (click)="loadModalInstitucionDocente()"
+                  >
+                    <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div>&nbsp;&nbsp;</div>
+                <div>
+                  <a
+                    class="btn-link"
+                    type="button"
+                    (click)="eliminarInstitucionDocente()"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{ 'pages.editarExpediente.ubicacion' | translate }}
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.territorioInstitucionDocente"
+                  maxlength="250"
+                  readonly
+                />
+              </div>
+              <div class="col-1 d-flex align-items-center align-right">
+                <div>
+                  <a
+                    class="btn-link"
+                    type="button"
+                    (click)="loadModalGeolocation()"
+                  >
+                    <i class="fas fa-search"></i>
+                  </a>
+                </div>
+                <div>&nbsp;&nbsp;</div>
+                <div>
+                  <a
+                    class="btn-link"
+                    type="button"
+                    (click)="eliminarUbicacion()"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-2 pl-5 text-right pr-2 mb-2 con-combo">
+                <label for="fecha">{{
+                  'pages.editarExpediente.fecha' | translate
+                }}</label>
+              </div>
+              <div class="col-6 fechas">
+                <label for="desde">{{
+                  'pages.editarExpediente.inicio' | translate
+                }}</label>
+                <app-datepicker
+                  [formControlName]="ctrl.fechaInicioTitulo"
+                ></app-datepicker>
+                <label for="hasta">{{
+                  'pages.editarExpediente.fin' | translate
+                }}</label>
+                <app-datepicker
+                  [formControlName]="ctrl.fechafinTitulo"
+                ></app-datepicker>
+              </div>
+              <div class="col-4"></div>
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{
+                  'pages.listadoExpediente.semestresRealizados' | translate
+                }}
+              </div>
+              <div class="col-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.nroSemestreRealizados"
+                  maxlength="9"
+                  UnirOnlyNumber
+                />
+              </div>
+              <div class="col-2 text-right pr-2 mb-2 con-combo">
+                {{ 'pages.editarExpediente.cedulaprofesional' | translate }}
+              </div>
+              <div class="col-10">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControlName]="ctrl.codigoColegiadoProfesional"
+                  maxlength="50"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card card-body" *ngIf="isReadOnly">
+          <div class="row">
+            <div class="col-2 text-right pr-2 mb-2">
+              {{ 'pages.listadoExpediente.titulo' | translate }}
+            </div>
+            <div class="col-10">{{ titulacionAcceso?.titulo || '-' }}</div>
+            <div class="col-2 text-right pr-2 mb-2">
+              {{ 'pages.editarExpediente.tipoEstudio' | translate }}
+            </div>
+            <div class="col-10">
+              {{ titulacionAcceso?.tipoEstudio || '-' }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.editarExpediente.institucionDocente' | translate }}
+            </div>
+            <div class="col-10">
+              {{ titulacionAcceso?.institucionDocente || '-' }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.editarExpediente.ubicacion' | translate }}
+            </div>
+            <div class="col-10">
+              {{ titulacionAcceso?.idRefTerritorioInstitucionDocente || '-' }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.editarExpediente.fechaInicio' | translate }}
+            </div>
+            <div class="col-10">
+              {{
+                (titulacionAcceso?.fechaInicioTitulo | date: 'dd/MM/yyyy') ||
+                  '-'
+              }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.editarExpediente.fechaFin' | translate }}
+            </div>
+            <div class="col-10">
+              {{
+                (titulacionAcceso?.fechafinTitulo | date: 'dd/MM/yyyy') || '-'
+              }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.listadoExpediente.semestresRealizados' | translate }}
+            </div>
+            <div class="col-10">
+              {{ titulacionAcceso?.nroSemestreRealizados || '-' }}
+            </div>
+            <div class="col-2 text-right pr-2 mb-2 con-combo">
+              {{ 'pages.editarExpediente.cedulaprofesional' | translate }}
+            </div>
+            <div class="col-10">
+              {{ titulacionAcceso?.codigoColegiadoProfesional || '-' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mt-2 col d-flex justify-content-start">
+          <button
+            *ngIf="!isReadOnly"
+            type="submit"
+            class="btn btn-primary btn-sm mr-2"
+            (click)="save()"
+          >
+            {{ 'common.guardar' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-confirmation-modal #confirmationModal></app-confirmation-modal>
+<app-institucion-docente-popup-add
+  #modalInstitucionDocente
+  (institucionDocenteSeleccionado)="seleccionadoInstitucionDocente($event)"
+  [educationInstitution]="educationInstitution"
+></app-institucion-docente-popup-add>
+<unir-geolocation
+  #geolocationForm
+  [countrySelected]="countrySelected"
+  [pathDivisionDefault]="pathDivisionDefault"
+></unir-geolocation>

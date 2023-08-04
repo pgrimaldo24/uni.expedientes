@@ -1,0 +1,225 @@
+<fieldset class="fieldset-border" [disabled]="!consolidacion || consolidacion?.isEstadoValidada"
+    *blockUI="blockIdentity">
+    <legend class="legend-border">
+        {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.title' | translate }}
+        <span *ngIf="consolidacion">"{{ consolidacion.requisitoExpediente.nombre }}"</span>
+    </legend>
+    <div class="col pt-2">
+        <form [formGroup]="requisitoForm" novalidate>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row form-group">
+                        <label class="col-sm-2">{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.id' | translate
+                            }} </label>
+                        <label class="col-sm-10">{{ consolidacion?.id }}</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row form-group">
+                        <label class="col-sm-2">{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.ficheros' |
+                            translate }}</label>
+                        <div class="col-sm-10 al-center">
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary btn-sm mr-2"
+                                    [disabled]="!tieneCodigoClasificacionUniversidad || !isAdminGestor"
+                                    (click)="fileInput.click()">
+                                    <i class="fas fa-plus fa-sm"></i>
+                                    <input #fileInput type="file" (click)="fileInput.value = null"
+                                        (change)="onFileInput($event)" style="display:none;"
+                                        [formControlName]="formControls.fileUpload"
+                                        [class.is-invalid]="ctrlInvalid(formControls.fileUpload)" />
+                                </button>
+                                <span class="mr-2" [title]="ficheroTooltip">
+                                    <i class="fas fa-info-circle iconSize25"></i>
+                                </span>
+                                <unir-combobox [serverSide]="false" [elements]="documentosRequisitos"
+                                    [config]="comboRequisitoDocumento" class="w-100"
+                                    [formControlName]="formControls.requisitoDocumento"
+                                    [disable]="!consolidacion || consolidacion?.isEstadoValidada">
+                                </unir-combobox>
+                            </div>
+                            <div class="group-show-errors pt-2" *ngIf="ctrlInvalid(formControls.fileUpload)">
+                                <div class="text-danger"
+                                    *ngFor="let error of ctrlField(formControls.fileUpload).errors">
+                                    <span>{{ error }}</span>
+                                </div>
+                            </div>
+                            <div class="group-show-errors pt-2"
+                                *ngIf="consolidacion && !tieneCodigoClasificacionUniversidad">
+                                <div class="text-danger">
+                                    <span>{{
+                                        'pages.expedienteTabs.requisitos.consolidarRequisito.noClasificacionDocumental'
+                                        | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <app-data-table #table [columns]="columns" [rows]="rows" [isScroll]="true"
+                        [pageLengthOption]="false" [cellsTemplate]="{ opciones: opciones }">
+                        <ng-template #opciones let-data>
+                            <div *ngIf="isAdminGestor" class="text-center">
+                                <a class="btn-link ml-2" type="button"
+                                    (click)="updateConsolidacionRequisitoDocumento(data.object, $event)">
+                                    <i class="fas"
+                                        [ngClass]="data.object.ficheroValidado ? 'fa-thumbs-up text-success' : 'fa-thumbs-down text-danger'"></i>
+                                </a>
+                                <a class="btn-link ml-2" type="button"
+                                    (click)="downloadFicheroConsolidacionRequisitoDocumento(data.object.id, $event)">
+                                    <i class="fas fa-download text-dark"></i>
+                                </a>
+                                <a class="btn-link ml-2" type="button"
+                                    (click)="deleteConsolidacionRequisitoDocumento(data.object.id, $event)">
+                                    <i class="fas fa-trash-alt text-dark"></i>
+                                </a>
+                            </div>
+                        </ng-template>
+                    </app-data-table>
+                </div>
+                <div class="col-12">
+                    <div class="row form-group pl-3">
+                        <div class="form-check col-sm-6">
+                            <input class="form-check-input" type="checkbox" id="chkDocumentacionFisicaRecibida"
+                                [formControlName]="formControls.esDocumentacionFisica" />
+                            <label class="form-check-label" for="chkDocumentacionFisicaRecibida">
+                                {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.documentacionFisicaRecibida' |
+                                translate }}
+                            </label>
+                        </div>
+                        <div class="form-check col-sm-6">
+                            <input class="form-check-input" type="checkbox" id="chkEnviadaAceptadaPorAlumno"
+                                [formControlName]="formControls.enviadaPorAlumno" />
+                            <label class="form-check-label" for="chkEnviadaAceptadaPorAlumno">
+                                {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.enviadaAceptadaPorAlumno' |
+                                translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.texto' | translate }}</label>
+                        <textarea class="form-control" id="textArea" rows="3" [formControlName]="formControls.texto"
+                            [class.is-invalid]="ctrlInvalid(formControls.texto)"></textarea>
+                        <div class="group-show-errors" *ngIf="ctrlInvalid(formControls.texto)">
+                            <span class="invalid-feedback" *ngIf="ctrlField(formControls.texto).hasError('required')">
+                                {{ 'validations.required' | translate }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.fecha' | translate }}</label>
+                        <app-datepicker [formControlName]="formControls.fecha"
+                            [disable]="consolidacion && !consolidacion.requisitoExpediente.esLogro"></app-datepicker>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="consolidacion && consolidacion.requisitoExpediente.certificadoIdioma">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.idioma' | translate
+                                }}</label>
+                            <unir-combobox [serverSide]="true" [config]="comboIdioma"
+                                [formControlName]="formControls.idioma"
+                                [disable]="!consolidacion || consolidacion?.isEstadoValidada"
+                                [class.is-invalid]="ctrlInvalid(formControls.idioma)"></unir-combobox>
+                            <div class="group-show-errors" *ngIf="ctrlInvalid(formControls.idioma)">
+                                <span class="invalid-feedback"
+                                    *ngIf="ctrlField(formControls.idioma).hasError('required')">
+                                    {{ 'validations.required' | translate }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.nivelIdioma' | translate
+                                }}</label>
+                            <input type="text" class="form-control form-control-sm"
+                                [formControlName]="formControls.nivelIdioma"
+                                [class.is-invalid]="ctrlInvalid(formControls.nivelIdioma)">
+                            <div class="group-show-errors" *ngIf="ctrlInvalid(formControls.nivelIdioma)">
+                                <span class="invalid-feedback"
+                                    *ngIf="ctrlField(formControls.nivelIdioma).hasError('required')">
+                                    {{ 'validations.required' | translate }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{ 'pages.expedienteTabs.requisitos.consolidarRequisito.causaEstadoRequisito' | translate
+                            }}</label>
+                        <unir-combobox [serverSide]="true" [config]="comboCausaEstadoRequisito"
+                            [formControlName]="formControls.causaEstadoRequisito"
+                            [disable]="!consolidacion || consolidacion?.isEstadoValidada">
+                        </unir-combobox>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row form-group al-end">
+                        <label class="col-md-3 sizeEstado" [ngClass]="{
+                            isEstadoNoProcesada: consolidacion?.isEstadoNoProcesada,
+                            isEstadoValidada: consolidacion?.isEstadoValidada,
+                            isEstadoPendiente: consolidacion?.isEstadoPendiente,
+                            isEstadoRechazada: consolidacion?.isEstadoRechazada
+                          }">
+                            {{ consolidacion?.estadoRequisitoExpediente?.nombre }}
+                        </label>
+                        <label class="col-md-3 font-weight-bold">{{ consolidacion?.tipoRequisitoExpediente.nombre
+                            }}</label>
+                        <div class="col-md-6 mt-2 col d-flex justify-content-end">
+                            <button type="button" class="btn btn-light mr-2" [disabled]="!isAdminGestor"
+                                (click)="cancelChanges()">
+                                {{ 'common.cancelar' | translate }}
+                            </button>
+                            <button type="button" class="btn btn-primary" [disabled]="!isAdminGestor"
+                                (click)="updateConsolidacion()">
+                                {{ 'common.guardar' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <fieldset class="fieldset-border">
+                        <legend class="legend-border">
+                            {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.realizarAccion' | translate }}
+                        </legend>
+                        <div class="pt-3 pl-3 pr-3">
+                            <div class="row form-group">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-outline-danger btn-block"
+                                        (click)="deleteConsolidacionRequisito()"
+                                        [disabled]="consolidacion?.isEstadoValidada || !isAdminGestor">
+                                        {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.eliminarRequisito' |
+                                        translate }}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-danger btn-block"
+                                        (click)="rechazarConsolidacionRequisito()"
+                                        [disabled]="(!consolidacion?.isEstadoPendiente && !consolidacion?.isEstadoRechazada) || !isAdminGestor">
+                                        {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.rechazarRequisito' |
+                                        translate }}
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-success btn-block"
+                                        (click)="validarConsolidacionRequisito()"
+                                        [disabled]="(!consolidacion?.isEstadoPendiente && !consolidacion?.isEstadoRechazada) || !isAdminGestor">
+                                        {{ 'pages.expedienteTabs.requisitos.consolidarRequisito.validarRequisito' |
+                                        translate }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>
+<app-confirmation-modal #confirmModal></app-confirmation-modal>

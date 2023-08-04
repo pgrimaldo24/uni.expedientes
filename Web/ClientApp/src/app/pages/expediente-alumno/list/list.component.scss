@@ -1,0 +1,54 @@
+.page-title {
+  color: primary;
+  font-size: 130%;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .tooltip-inner {
+  background-color: white;
+  border: 1px solid lightgray;
+  color: black;
+  min-width: 700px;
+  width: 700px;
+}
+
+table {
+  width: 100%;
+  border: none;
+  tr {
+    border: none;
+    width: 100%;
+    td:first-child {
+      border: none;
+      font-weight: bold;
+      padding-right: 15px;
+      text-align: right;
+      vertical-align: middle;
+    }
+    td {
+      border: none;
+      padding-left: 15px;
+      text-align: left;
+      vertical-align: middle;
+    }
+  }
+}
+
+.span-link {
+  cursor: pointer;
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.span-link:hover {
+  text-decoration: underline;
+}
+
+:host ::ng-deep .certificado > .popover {
+  max-width: 300px !important;
+}
+
+.select-massive {
+  background-color: #f4f4f4;
+}

@@ -1,0 +1,157 @@
+<ng-template #content let-modal>
+  <div class="modal-header row">
+    <h4 class="modal-title col-7" id="modal-basic-title">
+      {{ 'pages.formularioRequisitos.documento' | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close col-1"
+      aria-describedby="modal-title"
+      (click)="dismissModal()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <form
+    [formGroup]="form"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    *blockUI="blockIdentity"
+  >
+    <div class="modal-body">
+      <div>
+        <div class="row form-group">
+          <label class="col-md-1 col-form-label">
+            {{ 'pages.formularioRequisitos.nombre' | translate }}
+          </label>
+          <div class="col-md-11">
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="controls.nombreDocumento"
+              UnirTrimLeft
+              [maxLength]="200"
+              [class.is-invalid]="ctrlInvalid(controls.nombreDocumento)"
+            />
+            <div
+              class="group-show-errors"
+              *ngIf="ctrlInvalid(controls.nombreDocumento)"
+            >
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.nombreDocumento).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4">
+            <label class="mr-2">{{
+              'pages.formularioRequisitos.obligatorio' | translate
+            }}</label>
+            <div
+              class="btn-group btn-group-toggle"
+              ngbRadioGroup
+              ISDI
+              name="radioBasic"
+              [formControlName]="controls.documentoObligatorio"
+            >
+              <label class="btn-primary" ngbButtonLabel id="estaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="true"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.si' | translate }}
+              </label>
+              <label class="btn-primary" ngbButtonLabel id="noEstaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="false"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.no' | translate }}
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="mr-2">{{
+              'pages.formularioRequisitos.editable' | translate
+            }}</label>
+            <div
+              class="btn-group btn-group-toggle"
+              ngbRadioGroup
+              ISDI
+              name="radioBasic"
+              [formControlName]="controls.documentoEditable"
+            >
+              <label class="btn-primary" ngbButtonLabel id="estaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="true"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.si' | translate }}
+              </label>
+              <label class="btn-primary" ngbButtonLabel id="noEstaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="false"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.no' | translate }}
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="mr-2">{{
+              'pages.formularioRequisitos.requiereAceptacionAlumno' | translate
+            }}</label>
+            <div
+              class="btn-group btn-group-toggle"
+              ngbRadioGroup
+              ISDI
+              name="radioBasic"
+              [formControlName]="controls.requiereAceptacionAlumno"
+            >
+              <label class="btn-primary" ngbButtonLabel id="estaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="true"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.si' | translate }}
+              </label>
+              <label class="btn-primary" ngbButtonLabel id="noEstaVigente">
+                <input
+                  ngbButton
+                  type="radio"
+                  [value]="false"
+                  name="estaVigente"
+                />{{ 'pages.formularioRequisitos.no' | translate }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer container-footer">
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm mr-2"
+          (click)="dismissModal()"
+        >
+          {{ 'common.cancelar' | translate }}
+        </button>
+        <button type="submit" class="btn btn-primary btn-sm">
+          {{ 'common.aceptar' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

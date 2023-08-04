@@ -1,0 +1,28 @@
+<div class="card card-body">
+    <div class="row" [formGroup]="resumenForm">
+        <div class="col-md-4">
+            <div class="form-group">
+                <app-resumen-situacion [expedienteAlumno]="expedienteAlumno">
+                </app-resumen-situacion>
+            </div>
+            <div class="form-group">
+                <app-resumen-cronologia [expedienteAlumno]="expedienteAlumno" [datosErp]="datosErp">
+                </app-resumen-cronologia>
+            </div>
+            <div class="form-group">
+                <app-resumen-creditos [resumenForm]="resumenForm" [expedienteAlumno]="expedienteAlumno"
+                    [grafoPlan]="grafoPlan" [reconocimientos]="reconocimientos?.asignaturasReconocimientos">
+                </app-resumen-creditos>
+            </div>
+        </div>
+        <div class="col-md-8" [ngClass]="{'full-screen' : fullScreen}">
+            <div class="form-group">
+                <app-resumen-plan [expedienteAlumno]="expedienteAlumno" [grafoPlan]="grafoPlan"
+                    [resumenForm]="resumenForm" [fullScreen]="fullScreen" [reconocimientos]="reconocimientos">
+                </app-resumen-plan>
+                <button type="button" class="btn btn-primary btn-sm btn-full-screen" (click)="setFullScreen()"><i
+                        class="fas " [ngClass]="fullScreen ? 'fa-compress-alt' : 'fa-expand-alt'"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

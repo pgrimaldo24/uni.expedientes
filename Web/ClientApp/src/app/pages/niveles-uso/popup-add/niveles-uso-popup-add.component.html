@@ -1,0 +1,289 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{'pages.nivelesUso.titleAddNivelUso' | translate}}</h4>
+        <button type="button" class="close" aria-describedby="modal-title" [disabled]="submitting" (click)="cancelar(modal)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="modal-body" *blockUI="blockPopup">
+        <form #frmNivelUso [formGroup]="form" id="frmNivelUso" novalidate (ngSubmit)="guardarNivelUso(modal, $event)">
+            <div class="form-row">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{'pages.nivelesUso.tipoNivelUso' | translate}}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox id="cbxTipoNivelUso" [serverSide]="true" [config]="configTipoNivelUso" [formControlName]="ctrl.tipoNivelUsoCombo">
+                    </unir-combobox>    
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esUniversidad">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{'pages.nivelesUso.universidad' | translate}}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo" [class.is-invalid]="ctrlInvalid(ctrl.universidadCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.universidadCombo)">
+                        <span class='invalid-feedback' *ngIf="ctrlField(ctrl.universidadCombo).hasError('required')">
+                          {{'validations.required' | translate}}
+                        </span>
+                      </div>
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esTipoEstudio">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{'pages.nivelesUso.universidad' | translate}}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo"
+                                   (selected)="onChangeUniversidad()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{'pages.nivelesUso.tipoEstudio' | translate}}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox id="cbxTipoEstudio" [config]="configTipoEstudio" [formControlName]="ctrl.tipoEstudioCombo"
+                                   [serverSide]="true" [class.is-invalid]="ctrlInvalid(ctrl.tipoEstudioCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.tipoEstudioCombo)">
+                      <span class='invalid-feedback' *ngIf="ctrlField(ctrl.tipoEstudioCombo).hasError('required')">
+                        {{'validations.required' | translate}}
+                      </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esEstudio">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.universidad' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo"
+                                   (selected)="onChangeUniversidad()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [config]="configTipoEstudio" [formControlName]="ctrl.tipoEstudioCombo"
+                                   [serverSide]="true" (selected)="onChangeTipoEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.estudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configEstudio" [formControlName]="ctrl.estudioCombo"
+                                   [class.is-invalid]="ctrlInvalid(ctrl.estudioCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.estudioCombo)">
+                      <span class='invalid-feedback' *ngIf="ctrlField(ctrl.estudioCombo).hasError('required')">
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esPlanEstudio">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.universidad' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo"
+                                   (selected)="onChangeUniversidad()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [config]="configTipoEstudio" [formControlName]="ctrl.tipoEstudioCombo"
+                                   [serverSide]="true" (selected)="onChangeTipoEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.estudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configEstudio" [formControlName]="ctrl.estudioCombo"
+                                   (selected)="onChangeEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.planEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configPlanEstudio" [formControlName]="ctrl.planEstudioCombo"
+                                   [class.is-invalid]="ctrlInvalid(ctrl.planEstudioCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.planEstudioCombo)">
+                      <span class='invalid-feedback' *ngIf="ctrlField(ctrl.planEstudioCombo).hasError('required')">
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esTipoAsignatura">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.universidad' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo"
+                                   (selected)="onChangeUniversidad()" [class.is-invalid]="ctrlInvalid(ctrl.universidadCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.universidadCombo)">
+                        <span class='invalid-feedback' *ngIf="ctrlField(ctrl.universidadCombo).hasError('required')">
+                          {{ 'validations.required' | translate }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [config]="configTipoEstudio" [formControlName]="ctrl.tipoEstudioCombo"
+                                   [serverSide]="true" (selected)="onChangeTipoEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.estudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configEstudio" [formControlName]="ctrl.estudioCombo"
+                                   (selected)="onChangeEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.planEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configPlanEstudio" [formControlName]="ctrl.planEstudioCombo"
+                                   (selected)="onChangePlanEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoAsignatura' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configTipoAsignatura" [formControlName]="ctrl.tipoAsignaturaCombo"
+                                   (selected)="onChangeTipoAsignatura()" [class.is-invalid]="ctrlInvalid(ctrl.tipoAsignaturaCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.tipoAsignaturaCombo)">
+                        <span class='invalid-feedback' *ngIf="ctrlField(ctrl.tipoAsignaturaCombo).hasError('required')">
+                          {{ 'validations.required' | translate }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row" *ngIf="esAsignaturaPlan">
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.universidad' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configUniversidad" [formControlName]="ctrl.universidadCombo"
+                                   (selected)="onChangeUniversidad()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [config]="configTipoEstudio" [formControlName]="ctrl.tipoEstudioCombo"
+                                   [serverSide]="true" (selected)="onChangeTipoEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.estudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configEstudio" [formControlName]="ctrl.estudioCombo"
+                                   (selected)="onChangeEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.planEstudio' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configPlanEstudio" [formControlName]="ctrl.planEstudioCombo"
+                                   (selected)="onChangePlanEstudio()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.tipoAsignatura' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox [serverSide]="true" [config]="configTipoAsignatura" [formControlName]="ctrl.tipoAsignaturaCombo"
+                                   (selected)="onChangeTipoAsignatura()">
+                    </unir-combobox>
+                </div>
+                <div class="form-group col-2">
+                    <label class="right">
+                        {{ 'pages.nivelesUso.asignaturaPlan' | translate }}
+                    </label>
+                </div>
+                <div class="form-group col-9">
+                    <unir-combobox id="cbxAsignaturaPlan" [serverSide]="true" [config]="configAsignaturaPlan" [formControlName]="ctrl.asignaturaPlanCombo"
+                                   [class.is-invalid]="ctrlInvalid(ctrl.asignaturaPlanCombo)">
+                    </unir-combobox>
+                    <div class='group-show-errors' *ngIf="ctrlInvalid(ctrl.asignaturaPlanCombo)">
+                      <span class='invalid-feedback' *ngIf="ctrlField(ctrl.asignaturaPlanCombo).hasError('required')">
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <span class="right">
+            <button type="submit" [disabled]="submitting" form="frmNivelUso" class="btn btn-primary btn-sm mr-2">
+                {{ 'common.guardar' | translate }}
+            </button>
+            <button ngbAutofocus [disabled]="submitting" class="btn btn-primary btn-sm" (click)="cancelar(modal)">
+                {{ 'common.cancelar' | translate }}
+            </button>
+        </span>
+    </div>
+</ng-template>

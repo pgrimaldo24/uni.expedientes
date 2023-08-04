@@ -1,0 +1,138 @@
+<ng-template #content let-modal>
+  <div class="modal-header row">
+    <h4 class="modal-title col-7" id="modal-basic-title">
+      {{ title | translate }}
+    </h4>
+    <div class="btn-group btn-group-toggle col-4" data-toggle="buttons">
+      <label class="btn btn-info" [ngClass]="ambito == 1 ? 'active' : ''">
+        <input type="radio" name="ambito" [value]="1" [(ngModel)]="ambito" />
+        {{ 'pages.observations.publica' | translate }}
+      </label>
+      <label class="btn btn-info" [ngClass]="ambito == 2 ? 'active' : ''">
+        <input type="radio" name="ambito" [value]="2" [(ngModel)]="ambito" />
+        {{ 'pages.observations.privada' | translate }}
+      </label>
+      <label class="btn btn-info" [ngClass]="ambito == 3 ? 'active' : ''">
+        <input type="radio" name="ambito" [value]="3" [(ngModel)]="ambito" />
+        {{ 'pages.observations.restringida' | translate }}
+      </label>
+    </div>
+    <button
+      type="button"
+      class="close col-1"
+      aria-describedby="modal-title"
+      (click)="dismissModal()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <form
+    [formGroup]="form"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    *blockUI="blockIdentity"
+  >
+    <div class="modal-body">
+      <div>
+        <div class="row form-group">
+          <label class="col-md-1 col-form-label">
+            {{ 'pages.observations.usuario' | translate }}
+          </label>
+          <div class="col-md-3">
+            <label class="col-form-label"> {{ userName }} </label>
+          </div>
+          <label class="col-md-1 col-form-label">
+            {{ 'pages.observations.fecha' | translate }}
+          </label>
+          <div class="col-md-3">
+            <label class="col-form-label">
+              {{ fecha }}
+            </label>
+          </div>
+          <label class="col-md-1 col-form-label" *ngIf="ambito == 3"> </label>
+          <div class="col-md-3" *ngIf="ambito == 3"></div>
+        </div>
+        <div class="row form-group" *ngIf="ambito == 3">
+          <label class="col-md-1 col-form-label">
+            {{ 'pages.observations.roles' | translate }}
+          </label>
+          <div class="col-md-11">
+            <unir-combobox
+              #cbxRoles
+              [serverSide]="false"
+              [multiSelect]="true"
+              [elements]="roles"
+              [formControlName]="controls.roles"
+              [class.is-valid]="ctrlValid(controls.roles)"
+              [class.is-invalid]="ctrlInvalid(controls.roles)"
+            >
+            </unir-combobox>
+            <div class="group-show-errors" *ngIf="ctrlInvalid(controls.roles)">
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.roles).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="col-md-4 col-lg-3 col-form-label">
+            {{ 'pages.observations.resumen' | translate }}
+          </label>
+          <div class="col-md-8 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="controls.resumen"
+              UnirTrimLeft
+              [form]="form"
+              [class.is-invalid]="ctrlInvalid(controls.resumen)"
+              [maxLength]="200"
+            />
+            <div
+              class="group-show-errors"
+              *ngIf="ctrlInvalid(controls.resumen)"
+            >
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.resumen).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="col-md-4 col-lg-3 col-form-label">
+            {{ 'pages.observations.nota' | translate }}
+          </label>
+          <div class="col-md-8 col-lg-9">
+            <angular-editor
+              [formControlName]="controls.mensaje"
+              [config]="editorConfig"
+            ></angular-editor>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer container-footer">
+      <div>
+        <button type="submit" class="btn btn-primary btn-sm mr-2">
+          {{ 'common.aceptar' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="dismissModal()"
+        >
+          {{ 'common.cancelar' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<ng-template #tipContent>{{
+  'pages.configuraciones.helpEmails' | translate
+}}</ng-template>

@@ -1,0 +1,31 @@
+<fieldset class="fieldset-border">
+  <legend class="legend-border">
+    {{ 'pages.alumno.matriculas.title' | translate }}
+  </legend>
+  <div class="col">
+    <app-data-table #table [columns]="columns" [rows]="rows" [isScroll]="true" [pageLengthOption]="false"
+      (onLoad)="search()" [cellsTemplate]="{
+        seleccion: checkSeleccion,
+        acciones: options,
+        inicioPER: inicioPER
+      }">
+      <ng-template #checkSeleccion let-data>
+        <input type="checkbox" [disabled]="rows.length == 0" (change)="checkMatriculas($event, data.object.id)" />
+      </ng-template>
+      <ng-template #options let-data>
+        <div class="overflow-hidden">
+          <div ngbDropdown container="body" placement="bottom-right">
+            <a href="{{ redirectToEditMatricula }}{{ data.cells.idMatricula.value }}" class="text-dark" target="_blank">
+              <i class="fas fa-arrow-circle-right iconSize25"></i>
+            </a>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #inicioPER let-data>
+        <span>
+          {{ data.rowData.inicioPER | dateString: 'DD/MM/YYYY' }}
+        </span>
+      </ng-template>
+    </app-data-table>
+  </div>
+</fieldset>

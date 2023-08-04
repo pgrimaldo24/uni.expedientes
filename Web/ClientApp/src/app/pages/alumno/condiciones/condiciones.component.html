@@ -1,0 +1,29 @@
+<fieldset class="fieldset-border">
+  <legend class="legend-border">
+    {{ 'pages.alumno.condiciones.title' | translate }}
+  </legend>
+  <div class="col" *ngIf="tree">
+    <app-tree-view
+      [isRoot]="false"
+      [rootText]="tree.name"
+      [treeData]="tree.nodes"
+      [allCollapsable]="false"
+      [collapseIcon]="icons"
+    >
+      <ng-template #icons let-node="node">
+        <i
+          class="fas fa-circle mr-1"
+          *ngIf="node?.data"
+          [ngClass]="{
+            isEstadoNoProcesada: node?.data?.isEstadoNoProcesada,
+            isEstadoValidada: node?.data?.isEstadoValidada,
+            isEstadoPendiente: node?.data?.isEstadoPendiente,
+            isEstadoRechazada: node?.data?.isEstadoRechazada,
+            withoutEstado: !node.data.estadoRequisitoExpediente
+          }"
+        ></i
+        ><i [ngClass]="getNodeIcon(node)"></i>
+      </ng-template>
+    </app-tree-view>
+  </div>
+</fieldset>

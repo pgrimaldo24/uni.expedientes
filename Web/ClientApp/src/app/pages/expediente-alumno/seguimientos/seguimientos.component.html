@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-row">
+          <label class="col-sm-2 text-right">{{ 'pages.listadoExpediente.id' | translate }}</label>
+          <label class="col-10 info-detail">{{ expedienteAlumno.id }}</label>
+        </div>
+        <div class="form-row">
+          <label class="col-sm-2 text-right">{{ 'pages.listadoExpediente.alumno' | translate }}</label>
+          <label class="col-10 info-detail">{{ expedienteAlumno.alumno.idIntegracionAlumno }} - {{
+            expedienteAlumno.alumno.displayName }}</label>
+        </div>
+        <div class="form-row">
+          <label class="col-sm-2 text-right">{{ 'pages.listadoExpediente.planDeEstudio' | translate }}</label>
+          <label class="col-10 info-detail">{{ expedienteAlumno.nombrePlan }}</label>
+        </div>
+      </div>
+    </div>
+    <app-filtro-seguimiento (searchEvent)="applySearchFilter($event)" (cleanEvent)="cleanTable()"
+      [historial]="historial" [cacheHistorial]="cacheHistorial"></app-filtro-seguimiento>
+    <div class="card mt-3">
+      <div class="card-body">
+        <div class="row">
+          <h5 class="col card-title">
+            {{ 'common.resultados' | translate }}
+          </h5>
+        </div>
+        <app-data-table #table [columns]="columns" [rows]="rows" [total]="totalElements" (onLoad)="search($event)"
+          [cellsTemplate]="{ fecha: fecha }" [page]="pageIndex" [count]="count">
+          <ng-template #fecha let-data>
+            {{ data.object.fecha | dateToLocalString }}
+          </ng-template>
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+</div>

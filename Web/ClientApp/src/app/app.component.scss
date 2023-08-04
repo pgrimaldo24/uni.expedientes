@@ -1,0 +1,105 @@
+$color-title-application: #0494c4;
+
+.main-header {
+  width: 100%;
+  align-items: center;
+  height: auto;
+  max-height: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, .5);
+  padding: 5px 50px;
+  background: #0f5785;
+}
+
+.main-header-logo {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, .5);
+  padding: 0 50px;
+  height: auto;
+  max-height: 60px;
+}
+
+.info-user {
+  flex: 1 1 auto;
+  text-align: right;
+}
+
+.logo-unir {
+  margin-right: auto;
+  padding-top: 1px;
+}
+
+.info-user h6,
+.info-user a {
+  color: #fff;
+}
+
+.title-application {
+  color: $color-title-application;
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: -1;
+  font-weight: bold;
+}
+
+.title-application i.fas.fa-balance-scale {
+  color: $color-title-application;
+  font-size: 31px;
+}
+
+.info-empresa {
+  font-size: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  div.title-application a {
+    display: none;
+  }
+}
+
+.no-fixed-header-menu {
+  position: static;
+}
+
+.fixed-header-menu {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
+.pantalla {
+  display: flex;
+  min-height: 100vh;
+  flex-wrap: wrap;
+}
+
+.main-footer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  align-items: center;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.body-add {
+  margin-top: 50px;
+}
+
+.full-screen-loading {
+  padding-top: 100px;
+}
+
+.main-body {
+  width: 100%;
+  min-height: calc(100% - 190px);
+}
+
+.main-container {
+  position: relative;
+  height: 100%;
+}

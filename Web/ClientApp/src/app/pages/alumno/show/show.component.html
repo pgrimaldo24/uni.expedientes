@@ -1,0 +1,14 @@
+<div class="col">
+  <div class="page-title">
+    {{ 'pages.alumno.titlePage' | translate }}
+  </div>
+  <div *ngIf="!alumno">
+    <div class="size-loading" *blockUI="blockIdentity"></div>
+  </div>
+  <div *ngIf="alumno">
+    <app-alumno [alumno]="alumno"></app-alumno>
+    <app-expedientes [alumno]="alumno"></app-expedientes>
+    <app-matriculas [alumno]="alumno"></app-matriculas>
+    <app-condiciones [alumno]="alumno"></app-condiciones>
+  </div>
+</div>

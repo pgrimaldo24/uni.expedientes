@@ -1,0 +1,71 @@
+table.table thead th {
+    background-color: #0f5785;
+    color: #fff;
+}
+
+nav.main-menu {
+    background-color: #0F5785 !important;
+}
+
+nav.main-menu a {
+    color: #fff;
+}
+
+nav.main-menu a:hover {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+button.btn-primary,
+div.btn-primary,
+a.btn-primary,
+label.btn-primary {
+    background-color: #0F5785 !important;
+    color: #fff;
+    border-color: none !important;
+}
+
+button.option-menu-element:hover {
+    background-color: #0F5785 !important;
+    color: #fff;
+    border-color: none !important;
+}
+
+div.btn-group-toggle label.btn {
+    background-color: #fff !important;
+    color: #212121 !important;
+}
+
+div.btn-group-toggle label.btn.active {
+    background-color: #0F5785 !important;
+    color: #fff !important;
+    ;
+    border-color: none !important;
+}
+
+ul.pagination li a {
+    background-color: #0F5785 !important;
+    color: #fff;
+}
+
+ul.pagination li a:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+ul.pagination li.page-item.active a {
+    border-color: #fff;
+    background-color: #053e63 !important;
+}
+
+h5.card-title {
+    font-weight: bold;
+}
+
+a.navbar-brand {
+    color: #0F5785;
+}
+
+button.dropdown-item:hover {
+    background-color: #0f5785 !important;
+    color: #fff !important;
+}

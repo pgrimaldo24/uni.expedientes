@@ -1,0 +1,33 @@
+$item-selectable-hover: #007bff;
+$item-hover: #d4d4d4;
+:host {
+  .treeview-container {
+    .row-item, .row-item-selectable {
+      margin-bottom: 0.3rem;
+      flex-wrap: nowrap;
+      padding: 4px;
+      .unir-combobox-tree--item {
+        padding-left: 5px;
+      }
+    }
+    .row-item-selectable:hover {
+      background-color: $item-selectable-hover;
+      color: #fff;
+      cursor: pointer;
+    }
+    .row-item:hover {
+      background-color: $item-hover;
+      color: #fff;
+    }
+  }
+}
+
+.treeview-container {
+  overflow-y: auto;
+  padding-right: 0.3rem;
+}
+
+.treeview-text {
+  padding: 0.3rem 0;
+  white-space: nowrap;
+}

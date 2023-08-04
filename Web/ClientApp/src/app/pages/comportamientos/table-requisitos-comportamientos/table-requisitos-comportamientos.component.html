@@ -1,0 +1,114 @@
+<fieldset class="fieldset-border">
+  <legend class="legend-border">{{ 'pages.formularioComportamientos.requisitos' | translate }}</legend>
+  <div class="col">
+    <div class="card-container-btn">
+      <div class="card-btn-item">
+        <button (click)="newRequisitoExpediente()" type="button" class="btn btn-primary btn-sm mb-2">
+          <i class="fas fa-plus-circle"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm mb-2 ml-2" (click)="deleteMasive()">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+    <app-data-table #tableRequisitos
+      [columns]="columns" 
+      [rows]="rows" 
+      [total]="totalElements"
+      [page]="pageIndex"
+      [count]="pageCount"
+      (onLoad)="loadRequisitos()"
+      [columnsTemplate]="{ seleccion: checkSeleccion }"
+      [cellsTemplate]="{ 
+        seleccion: checkbox,
+        opciones: opciones,
+        nombre: nombreTemplate,
+        obligatoria: obligatoriaTemplate,
+        estaVigente: estaVigenteTemplate,
+        requeridaParaTitulo: requeridaParaTituloTemplate,
+        requeridaParaPago: requeridaParaPagoTemplate,
+        requiereDocumentacion: requiereDocumentacionTemplate,
+        modoRequerimientoDocumentacion : modoRequerimientoDocumentacionTemplate
+      }">
+      <ng-template #checkSeleccion>
+        <input type="checkbox" [disabled]="rows.length === 0" [checked]="isAllCheckedRequisito()"
+          (change)="checkRequisitosFiltered($event)" />
+      </ng-template>
+      <ng-template #checkbox let-data>
+        <div class="text-center">
+          <input [checked]="isCheckedRequisito(data.object.requisitoExpediente.id)" type="checkbox"
+            (change)="checkRequisito($event, data.object)" *ngIf="!data.rowData.esEdicion"/>
+        </div>
+      </ng-template>
+      <ng-template #nombreTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{data.object.requisitoExpediente.nombre}}</span>
+        <unir-combobox
+          [serverSide]="true"
+          [config]="confCbRequisitoExpediente"
+          [(ngModel)]="data.rowData.requisitoExpedienteEditar"
+          *ngIf="data.rowData.esEdicion">
+        </unir-combobox>
+      </ng-template>
+      <ng-template #obligatoriaTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{esObligatoriotipoRequisito(data.object.tipoRequisitoExpediente)}}</span>
+        <unir-combobox
+          [serverSide]="true"
+          [config]="confCbTipoRequisitoExpediente"
+          [(ngModel)]="data.rowData.tipoRequisitoExpedienteEditar"
+          *ngIf="data.rowData.esEdicion">
+        </unir-combobox>
+      </ng-template>
+      <ng-template #estaVigenteTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{showTextBoolean(data.object.requisitoExpediente.estaVigente)}}</span>
+        <span
+          *ngIf="data.rowData.esEdicion">{{data.rowData.requisitoExpedienteEditar ? showTextBoolean(data.rowData.requisitoExpedienteEditar.data.estaVigente) : ''}}</span>
+      </ng-template>
+      <ng-template #requeridaParaTituloTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{showTextBoolean(data.object.requisitoExpediente.requeridaParaTitulo)}}</span>
+        <span
+          *ngIf="data.rowData.esEdicion">{{data.rowData.requisitoExpedienteEditar ? showTextBoolean(data.rowData.requisitoExpedienteEditar.data.requeridaParaTitulo) : ''}}</span>
+      </ng-template>
+      <ng-template #requeridaParaPagoTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{showTextBoolean(data.object.requisitoExpediente.requeridaParaPago)}}</span>
+        <span
+          *ngIf="data.rowData.esEdicion">{{data.rowData.requisitoExpedienteEditar ? showTextBoolean(data.rowData.requisitoExpedienteEditar.data.requeridaParaPago) : ''}}</span>
+      </ng-template>
+      <ng-template #requiereDocumentacionTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{showTextBoolean(data.object.requisitoExpediente.requiereDocumentacion)}}</span>
+        <span
+          *ngIf="data.rowData.esEdicion">{{data.rowData.requisitoExpedienteEditar ? showTextBoolean(data.rowData.requisitoExpedienteEditar.data.requiereDocumentacion) : ''}}</span>
+      </ng-template>
+      <ng-template #modoRequerimientoDocumentacionTemplate let-data>
+        <span
+          *ngIf="!data.rowData.esEdicion">{{data.object.requisitoExpediente.modoRequerimientoDocumentacion}}</span>
+        <span
+          *ngIf="data.rowData.esEdicion">{{data.rowData.requisitoExpedienteEditar?.data.modoRequerimientoDocumentacion}}</span>
+      </ng-template>
+      <ng-template #opciones let-data>
+        <div *ngIf="data.rowData.esEdicion">
+          <button class="btn btn-light mr-2 center" (click)="saveEditRequisito(data)">
+            <span class="fas fa-check"></span>
+          </button>
+          <button class="btn btn-light center" (click)="cancelEditRequisito(data)">
+            <span class="fas fa-window-close"></span>
+          </button>
+        </div>
+        <div *ngIf="!data.rowData.esEdicion">
+          <button class="btn btn-light mr-2 center" (click)="editRequisito(data)">
+            <span class="fas fa-pen"></span>
+          </button>
+          <button class="btn btn-light center" (click)="deleteRequisito(data)">
+            <span class="fas fa-trash-alt"></span>
+          </button>
+        </div>
+      </ng-template>
+    </app-data-table>
+  </div>
+</fieldset>
+<app-confirmation-modal #confirmModal></app-confirmation-modal>

@@ -1,0 +1,20 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:64751",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "Unir.Expedientes": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ENTORNO": "local"
+      },
+      "applicationUrl": "http://localhost:5000"
+    }
+  }
+}

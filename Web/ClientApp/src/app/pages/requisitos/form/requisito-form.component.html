@@ -1,0 +1,623 @@
+<div class="col">
+  <h3 class="card-title">
+    {{ 'pages.formularioRequisitos.titlePage' | translate }}
+  </h3>
+</div>
+
+<div class="col">
+  <div>
+    <div class="card" *blockUI="blockIdentity">
+      <div class="card-body">
+        <div class="col">
+          <form [formGroup]="form" novalidate>
+            <div class="row">
+              <div class="col-12">
+                <div class="row form-group">
+                  <div class="col-sm-1">
+                    <label>{{
+                      'pages.formularioRequisitos.nombre' | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-4">
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      [formControlName]="controls.nombre"
+                      [class.is-invalid]="ctrlInvalid(controls.nombre)"
+                    />
+                    <div
+                      class="group-show-errors"
+                      *ngIf="ctrlInvalid(controls.nombre)"
+                    >
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="ctrlField(controls.nombre).hasError('required')"
+                      >
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-sm-1">
+                    <label>{{
+                      'pages.formularioRequisitos.estaVigente' | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-2">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.estaVigente"
+                    >
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="estaVigente"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="true"
+                          name="estaVigente"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="noEstaVigente"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="false"
+                          name="estaVigente"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-1">
+                    <label id="orden" *ngIf="requisito"
+                      >{{ 'pages.formularioRequisitos.orden' | translate }}
+                      {{ requisito.orden }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="row form-group">
+                  <div class="col-sm-12">
+                    <label>{{
+                      'pages.formularioRequisitos.descripcion' | translate
+                    }}</label>
+                  </div>
+                  <div class="col-sm-12">
+                    <textarea
+                      class="form-control"
+                      id="textArea"
+                      rows="3"
+                      [formControlName]="controls.descripcion"
+                      [class.is-invalid]="ctrlInvalid(controls.descripcion)"
+                    ></textarea>
+                    <div
+                      class="group-show-errors"
+                      *ngIf="ctrlInvalid(controls.descripcion)"
+                    >
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          ctrlField(controls.descripcion).hasError('required')
+                        "
+                      >
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.requeridoParaTitulo' | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.requeridaParaTitulo"
+                    >
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="requeridoParaTitulo"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="requeridoParaTitulo"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="noRequeridoParaTitulo"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="requeridoParaTitulo"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.requiereMatricularse'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.requiereMatricularse"
+                      (change)="
+                        changeObligatorio(
+                          controls.requiereMatricularse,
+                          controls.tipoExpedienteAdicional
+                        )
+                      "
+                    >
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="requiereMatricularse"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="noRequiereMatricularse"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.requiereDocumentacion'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.requiereDocumentacion"
+                      (change)="deshabilitarDocumentacionProtegida()"
+                    >
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="requiereDocumentacion"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label
+                        class="btn-primary"
+                        ngbButtonLabel
+                        id="noRequiereDocumentacion"
+                      >
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.documentacionProtegida'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.documentacionProtegida"
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.requeridoParaPagoDeTasas'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.requeridaParaPago"
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.enviarEmailAAlumno' | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.enviarEmailAlumno"
+                      (change)="
+                        changeObligatorio(
+                          controls.enviarEmailAlumno,
+                          controls.descripcion
+                        )
+                      "
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="true"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="false"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.estaRestringida' | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.estaRestringida"
+                      (change)="
+                        deshabilitarRoles(
+                          controls.estaRestringida,
+                          controls.roles
+                        )
+                      "
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="true"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="false"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.requiereTextoAdicional'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.requiereTextoAdicional"
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="true"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          [value]="false"
+                          name="id"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.tipoExpedienteAdicional'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-8">
+                    <unir-combobox
+                      [serverSide]="true"
+                      [multiSelect]="false"
+                      [config]="configComboTipoExpedienteAdicional"
+                      [formControlName]="controls.tipoExpedienteAdicional"
+                      [class.is-invalid]="
+                        ctrlInvalid(controls.tipoExpedienteAdicional)
+                      "
+                    >
+                    </unir-combobox>
+                    <div
+                      class="group-show-errors"
+                      *ngIf="ctrlInvalid(controls.tipoExpedienteAdicional)"
+                    >
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="
+                          ctrlField(controls.tipoExpedienteAdicional).hasError(
+                            'required'
+                          )
+                        "
+                      >
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.modoDeRequerimientoDeDocumentación'
+                      | translate
+                  }}</label>
+                  <div class="col-sm-8">
+                    <unir-combobox
+                      [serverSide]="true"
+                      [multiSelect]="false"
+                      [config]="configComboModoRequerimientoDocumentacion"
+                      [formControlName]="
+                        controls.modoDeRequerimientoDeDocumentacion
+                      "
+                    >
+                    </unir-combobox>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.estadoExpediente' | translate
+                  }}</label>
+                  <div class="col-sm-8">
+                    <unir-combobox
+                      [serverSide]="true"
+                      [multiSelect]="false"
+                      [config]="configComboEstadoExpediente"
+                      [formControlName]="controls.estadoExpediente"
+                    >
+                    </unir-combobox>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.roles' | translate
+                  }}</label>
+                  <div class="col-sm-8">
+                    <unir-combobox
+                      #cbxRoles
+                      [serverSide]="false"
+                      [multiSelect]="true"
+                      [elements]="roles"
+                      [formControlName]="controls.roles"
+                      [class.is-invalid]="ctrlInvalid(controls.roles)"
+                    >
+                    </unir-combobox>
+                    <div
+                      class="group-show-errors"
+                      *ngIf="ctrlInvalid(controls.roles)"
+                    >
+                      <span
+                        class="invalid-feedback"
+                        *ngIf="ctrlField(controls.roles).hasError('required')"
+                      >
+                        {{ 'validations.required' | translate }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="form-label col-sm-4">{{
+                    'pages.formularioRequisitos.esCertificado' | translate
+                  }}</label>
+                  <div class="col-sm-6">
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      ISDI
+                      name="radioBasic"
+                      [formControlName]="controls.esCertificado"
+                    >
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="true"
+                        />{{ 'pages.formularioRequisitos.si' | translate }}
+                      </label>
+                      <label class="btn-primary" ngbButtonLabel>
+                        <input
+                          ngbButton
+                          type="radio"
+                          name="id"
+                          [value]="false"
+                        />{{ 'pages.formularioRequisitos.no' | translate }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-12">
+              <fieldset class="fieldset-border" [disabled]="disabledFilesTipes">
+                <legend class="legend-border">
+                  {{
+                    'pages.formularioRequisitos.extensionesPermitidasParaElDocumento'
+                      | translate
+                  }}
+                </legend>
+                <div class="col">
+                  <div class="row form-group">
+                    <div
+                      class="form-check col-sm-6"
+                      *ngFor="let fileType of filesTypes; let i = index"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="defaultCheck{{i}}"
+                        [(ngModel)]="fileType.checked"
+                      />
+                      <label class="form-check-label" for="defaultCheck{{i}}">
+                        {{ fileType.displayName }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="col-12" *ngIf="requisito">
+              <app-documentos-requisitos
+                [disabledFilesTipes]="disabledFilesTipes"
+                [idRequisitoExpediente]="requisito.id"
+                [documentacionProtegida]="
+                  ctrlField(controls.documentacionProtegida)
+                "
+              ></app-documentos-requisitos>
+            </div>
+
+            <div class="col-12">
+              <div class="row form-group">
+                <div class="mt-2 col d-flex justify-content-end">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm mr-2"
+                    [routerLink]="['/requisitos']"
+                  >
+                    {{ 'common.volver' | translate }}
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    (click)="onSubmit()"
+                  >
+                    {{ 'common.guardar' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

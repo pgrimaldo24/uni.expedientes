@@ -1,0 +1,27 @@
+.iconSize25 {
+  font-size: 25px;
+}
+
+.iconSize25:hover {
+  cursor: pointer;
+}
+
+.isEstadoNoProcesada {
+  color: gray;
+}
+
+.isEstadoValidada {
+  color: #00a65a;
+}
+
+.isEstadoPendiente {
+  color: orange;
+}
+
+.isEstadoRechazada {
+  color: #dd4b39;
+}
+
+.withoutEstado {
+  color: transparent;
+}

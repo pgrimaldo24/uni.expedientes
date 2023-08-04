@@ -1,0 +1,29 @@
+.iconSize25 {
+  font-size: 25px;
+}
+
+.iconSize17 {
+  font-size: 17px;
+}
+
+.iconSize25:hover {
+  cursor: pointer;
+}
+
+.saldoPendiente {
+  color: #cf2a28;
+}
+
+.saldoCero {
+  color: #009e11;
+}
+
+.sinDatosFinancieros {
+  font-weight: bold;
+}
+
+.img-float {
+  float: left; 
+  width: 120px; 
+  height: 150px;
+}

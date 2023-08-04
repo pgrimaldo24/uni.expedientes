@@ -1,0 +1,38 @@
+<div *blockUI="blockIdentity">
+  <app-alumno *ngIf="dataExpedienteAlumno" [alumno]="dataExpedienteAlumno.alumno" [expediente]="dataExpedienteAlumno">
+  </app-alumno>
+  <div class="card card-body" style="margin-top: 15px">
+    <div class="row">
+      <div class="col-12">
+        <div class="btn-group btn-block btn-group-toggle" ngbRadioGroup [(ngModel)]="section">
+          <label ngbButtonLabel class="btn-primary" *ngFor="let tab of tabs" [hidden]="tab.hidden">
+            <input ngbButton type="radio" [value]="tab.value" (click)="changeTab(tab.value, $event)" />
+            {{ tab.label | translate }}
+          </label>
+        </div>
+        <div class="mt-2"></div>
+      </div>
+    </div>
+    <ng-container [ngSwitch]="section" *ngIf="data">
+      <app-resumen-tab *ngSwitchCase="expedienteSection.RESUMEN" [expedienteAlumno]="dataExpedienteAlumno"
+        [datosErp]="data" [grafoPlan]="grafoPlan" [reconocimientos]="reconocimientos">
+      </app-resumen-tab>
+      <app-expediente *ngSwitchCase="expedienteSection.EXPEDIENTE" [isReadOnly]="isReadOnly"
+        [expedienteAlumno]="dataExpedienteAlumno" [data]="data">
+      </app-expediente>
+      <app-requisitos-tab *ngSwitchCase="expedienteSection.REQUISITOS" [alumno]="dataExpedienteAlumno.alumno"
+        [expedienteAlumno]="dataExpedienteAlumno" [configuracionUniversidad]="configuracionUniversidad">
+      </app-requisitos-tab>
+      <app-calificaciones-tab *ngSwitchCase="expedienteSection.CALIFICACIONES" [expedienteAlumno]="dataExpedienteAlumno"
+        [grafoPlan]="grafoPlan" [reconocimientos]="reconocimientos">
+      </app-calificaciones-tab>
+      <app-puede-titularse *ngSwitchCase="expedienteSection.PUEDE_TITULARSE"
+        [dataExpedienteAlumno]="dataExpedienteAlumno"></app-puede-titularse>
+      <app-observaciones *ngSwitchCase="expedienteSection.ANOTACIONES" [dataExpedienteAlumno]="dataExpedienteAlumno"
+        [isReadOnly]="isReadOnly">
+      </app-observaciones>
+      <app-seguimientos *ngSwitchCase="expedienteSection.SEGUIMIENTOS"
+        [expedienteAlumno]="dataExpedienteAlumno"></app-seguimientos>
+    </ng-container>
+  </div>
+</div>

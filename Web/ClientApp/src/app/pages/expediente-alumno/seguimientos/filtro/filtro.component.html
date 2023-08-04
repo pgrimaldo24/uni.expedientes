@@ -1,0 +1,72 @@
+<div>
+    <button class="btn btn-light" type="button" data-toggle="collapse" (click)="onCollapse()"
+        data-target="#contenedorFiltros" [attr.aria-expanded]="!isCollapsed" aria-controls="contenedorFiltros">
+        <i class="fas fa-filter"></i>
+        {{ 'common.filtros' | translate }}
+    </button>
+    <ng-container *ngIf="isCollapsed">
+        <ng-container *ngFor="let filteredValue of clauses">
+            <div class="btn btn-primary btn-sm ml-1 disabled">
+                <span> {{ filteredValue.label }}: {{ filteredValue.text }} </span>
+                <button type="button" class="close" (click)="removeFilterField(filteredValue.key)">
+                    <span class="ml-1" aria-hidden="true"
+                        style="vertical-align: top; color: white; text-shadow: none">&times;</span>
+                </button>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div id="contenedorFiltros" class="collapse" [ngbCollapse]="isCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="filterForm" novalidate (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <label class="col-sm-2 text-right">{{ 'pages.listadoSeguimientos.tipo' | translate }}</label>
+                                <div class="col-sm-10">
+                                    <unir-combobox [serverSide]="true" [config]="configComboTipoSeguimiento"
+                                        [formControlName]="controls.tipoSeguimiento">
+                                    </unir-combobox>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 text-right">{{ 'pages.editarExpediente.seguimientos.descripcion' | translate
+                                    }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control"
+                                        placeholder="{{'pages.listadoSeguimientos.placeholder.descripcion' | translate}}"
+                                        [formControlName]="controls.descripcionSeguimiento" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 text-right">{{ 'pages.listadoSeguimientos.fecha' | translate }}</label>
+                                <div class="col-sm-10 row">
+                                    <label class="col-md-1">{{ 'pages.editarExpediente.seguimientos.desde' | translate
+                                        }}</label>
+                                    <div class="col-md-3">
+                                        <app-datepicker [formControlName]="controls.fechaDesde"></app-datepicker>
+                                    </div>
+                                    <label class="col-md-1">{{ 'pages.editarExpediente.seguimientos.desde' | translate
+                                        }}</label>
+                                    <div class="col-md-3">
+                                        <app-datepicker [formControlName]="controls.fechaHasta"></app-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mt-2 col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                {{ 'common.buscar' | translate }}
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="cleanFilters()">
+                                {{ 'common.limpiar' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

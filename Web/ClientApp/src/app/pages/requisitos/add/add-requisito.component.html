@@ -1,0 +1,88 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ 'pages.formularioRequisitos.addRequisito' | translate }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-describedby="modal-title"
+      (click)="dismissModal()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <form
+    [formGroup]="form"
+    novalidate
+    (ngSubmit)="onSubmit()"
+    *blockUI="blockIdentity"
+  >
+    <div class="modal-body">
+      <div>
+        <div class="row form-group">
+          <label class="col-md-4 col-lg-3 col-form-label">
+            {{ 'pages.formularioRequisitos.nombre' | translate }}
+          </label>
+          <div class="col-md-8 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="controls.nombre"
+              UnirTrimLeft
+              [form]="form"
+              [class.is-invalid]="ctrlInvalid(controls.nombre)"
+              [maxLength]="200"
+            />
+            <div class="group-show-errors" *ngIf="ctrlInvalid(controls.nombre)">
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.nombre).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label class="col-md-4 col-lg-3 col-form-label">
+            {{ 'pages.formularioRequisitos.orden' | translate }}
+          </label>
+          <div class="col-md-8 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="controls.orden"
+              UnirTrimLeft
+              [form]="form"
+              [class.is-invalid]="ctrlInvalid(controls.orden)"
+              [maxLength]="200"
+            />
+            <div class="group-show-errors" *ngIf="ctrlInvalid(controls.orden)">
+              <span
+                class="invalid-feedback"
+                *ngIf="ctrlField(controls.orden).hasError('required')"
+              >
+                {{ 'validations.required' | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer container-footer">
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm mr-2"
+          (click)="dismissModal()"
+        >
+          {{ 'common.cancelar' | translate }}
+        </button>
+        <button type="submit" class="btn btn-primary btn-sm">
+          {{ 'common.aceptar' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

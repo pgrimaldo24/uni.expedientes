@@ -1,0 +1,106 @@
+<fieldset class="fieldset-border">
+  <legend class="legend-border">
+    {{ 'pages.alumno.alumno.title' | translate }}
+  </legend>
+  <div>
+    <div class="row" *ngIf="alumno">
+      <div class="col-12">
+        <div class="row d-block pl-3">
+          <div class="img-float">
+            <img *ngIf="!alumno.foto"
+              src="data:image/png;base64,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" width="100px" height="100px"/>
+            <img *ngIf="alumno.foto" [src]="alumno.foto" width="100px" height="100px"/>
+          </div>
+          <div class="col-md-12">
+            <div class="row form-group">
+              <div class="col-4">
+                <div class="row">
+                  <div class="col-1 pl-0">
+                    <i *ngIf="alumno.sexo == 'M'" class="fas fa-male iconSize25"></i>
+                    <i *ngIf="alumno.sexo == 'F'" class="fas fa-female iconSize25"></i>
+                  </div>
+                  <div class="col-11 pl-0">
+                    {{ alumno.displayName }}                  
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-1 pl-0"></div>
+                  <div class="col-11 pl-0">{{ alumno.tipoDocumentoIdentificacionPais }}
+                    {{ alumno.nroDocIdentificacion }}</div>
+                </div>
+                <div class="row mt-1">
+                  <div class="col-1 pl-0">
+                    <i class="fas fa-phone iconSize17"></i>
+                  </div>
+                  <div class="col-11 pl-0">{{ alumno.celular }}</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="row mb-2">
+                  {{ 'pages.alumno.alumno.nacionalidad' | translate }}:
+                  {{ alumno.nacionalidad }}
+                </div>
+                <div class="row mb-2">
+                  {{ 'pages.alumno.alumno.fechaNacimiento' | translate }}:
+                  {{ alumno.fechaNacimiento | dateString: 'DD/MM/YYYY' }}
+                </div>
+                <div class="row mt-1">
+                  <div class="col-1 pl-0">
+                    <i class="fas fa-envelope iconSize17"></i>
+                  </div>
+                  <div class="col-11 pl-0">{{ alumno.email }}</div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="row mb-2">
+                  {{ 'pages.alumno.alumno.idAlumno' | translate }}:
+                  {{ alumno.idIntegracionAlumno }}
+                </div>
+                <div class="row mb-2" *ngIf="expediente">
+                  {{ 'pages.expedienteTabs.idPlan' | translate }}:
+                  {{ expediente.idRefPlan }}
+                </div>
+                <div class="row" *ngIf="expediente">
+                  {{ 'pages.expedienteTabs.idExpediente' | translate }}:
+                  {{ expediente.id }}
+                </div>
+              </div>
+              <div class="col-2" *blockUI="blockIdentity">
+                <div class="row" *ngIf="deuda" [ngClass]="{
+                                  saldoPendiente: deuda.saldo > 0,
+                                  saldoCero: deuda.saldo <= 0 && deuda.idCliente,
+                                  sinDatosFinancieros: !deuda.idCliente
+                                }">
+                  <span *ngIf="deuda.idCliente">({{ alumno.acronimoUniversidad }})</span>
+                  {{
+                  (deuda.saldo > 0
+                  ? 'pages.alumno.alumno.saldoPendiente'
+                  : deuda.idCliente
+                  ? 'pages.alumno.alumno.saldoCero'
+                  : 'pages.alumno.alumno.sinDatosFinanciero'
+                  ) | translate
+                  }}&nbsp;
+                  <i *ngIf="deuda.idCliente" class="fas fa-exclamation-circle iconSize25" (click)="showSaldos()"></i>
+                </div>
+                <div class="row mt-3" *ngIf="!expediente">
+                  <a href="{{ redirectToEditAlumno }}" class="text-dark" target="_blank">
+                    <i class="fas fa-arrow-circle-right iconSize25"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="expediente">
+              <label class="col-md-10 pl-0">({{ expediente.acronimoUniversidad }}) {{ expediente.nombrePlan }}</label>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary btn-sm mr-2" [routerLink]="['/Alumno/show', alumno.idIntegracionAlumno]">
+                  {{ 'pages.expedienteTabs.expedientes' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+<app-show-saldos #openForm></app-show-saldos>

@@ -1,0 +1,54 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ 'pages.alumno.deuda.title' | translate }} ({{ currencyUse }})
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-describedby="modal-title"
+      (click)="dismissModal()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col">
+        <app-data-table
+          #table
+          [columns]="columns"
+          [rows]="rows"
+          (onLoad)="search()"
+          [pageLengthOption]="false"
+          [cellsTemplate]="{
+            fechaRegistro: fechaRegistro,
+            importe: importe,
+            importePendiente: importePendiente
+          }"
+        >
+          <ng-template #fechaRegistro let-data>
+            {{ data.object.fechaRegistroIso | customDateCulture }}
+          </ng-template>
+          <ng-template #importe let-data>
+            {{ data.object.importeSimbolo }}
+          </ng-template>
+          <ng-template #importePendiente let-data>
+            {{ data.object.importePendienteSimbolo }}
+          </ng-template>
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer container-footer">
+    <div>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm mr-2"
+        (click)="dismissModal()"
+      >
+        {{ 'common.aceptar' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,31 @@
+.cronologia {
+    margin: 0 -10px;
+}
+
+.hito {
+    border-right: 4px solid;
+    padding-bottom: 25px;
+    margin-top: 4px;
+}
+
+.hito:last-child {
+    border-right: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.icon-cronologia {
+    width: 25px;
+    right: -11px;
+    position: absolute;
+    z-index: 1;
+    background: white;
+}
+
+.icon-cronologia i {
+    font-size: 25px;
+}
+
+.icon-popup {
+    padding-right: 10px;
+    cursor: pointer;
+}
